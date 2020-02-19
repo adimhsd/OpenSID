@@ -115,7 +115,7 @@ class Data_persil extends Admin_Controller {
 		$this->load->view('footer');
 	}
 
-		public function detail_persil($id=0)
+	public function detail_persil($id=0)
 	{
 		$header = $this->header_model->get_data();
 		$header['minsidebar'] = 1;
@@ -257,7 +257,7 @@ class Data_persil extends Admin_Controller {
 		redirect("data_persil/persil_jenis");
 	}
 
-		public function persil_kelas($id=0)
+	public function persil_kelas($id=0)
 	{
 		$this->load->helper('form');
 		$this->load->library('form_validation');
