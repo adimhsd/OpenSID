@@ -139,7 +139,7 @@
 											<label for="pid"  class="col-sm-3 control-label">Lokasi Tanah</label>
 											<div class="btn-group col-sm-8 kiri" data-toggle="buttons">
 												<label  class="btn btn-info btn-flat btn-sm col-sm-3 form-check-label <?= $persil_detail["lokasi"]?NULL : 'active'  ?>">
-													<input type="radio"  name="pilihan" class="form-check-input" type="radio" value="1"  autocomplete="off" onchange="pilih_lokasi(this.value);"> Pilih LOkasi
+													<input type="radio"  name="pilihan" class="form-check-input" type="radio" value="1"  autocomplete="off" onchange="pilih_lokasi(this.value);"> Pilih Lokasi
 												</label>
 												<label  class="btn btn-info btn-flat btn-sm col-sm-3 form-check-label  <?= $persil_detail["lokasi"]?'active' : NULL  ?>">
 													<input type="radio"  name="pilihan" class="form-check-input" type="radio" value="2" autocomplete="off" onchange="pilih_lokasi(this.value);"> Tulis Manual
