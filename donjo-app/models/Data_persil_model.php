@@ -224,7 +224,7 @@ class Data_persil_model extends CI_Model {
 			p.`no_sppt_pbb`, p.`lokasi`, p.`persil_peruntukan_id`, u.nama as namapemilik, w.rt, w.rw, w.dusun,alamat_luar
 			FROM `data_persil` p
 				LEFT JOIN tweb_penduduk u ON u.id = p.id_pend
-				LEFT JOIN tweb_wil_clusterdesa w ON w.id = u.id_cluster
+				LEFT JOIN tweb_wil_clusterdesa w ON w.id = p.id_clusterdesa
 				LEFT JOIN data_persil_kelas x ON x.id = p.persil_jenis_id
 				LEFT JOIN data_persil_c_desa y ON y.id = p.id_c_desa
 
