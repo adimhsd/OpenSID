@@ -44,7 +44,7 @@
 	<div class="box-body no-padding">
 		<ul class="nav nav-pills nav-stacked">
 			<?php if ($persil_kelas): ?>
-				<?php foreach ($persil_kelas as $item): ?>
+				<?php foreach ($persil_kelas as $key=>$item): ?>
 					<li><a href="<?= site_url("data_persil/persil/kelas/$key/")?>" title="<?=$item['1']?>"><i class='fa fa-list'></i> Kelas <?=$item['0']?></a></li>
 				<?php endforeach;?>
 			<?php endif; ?>
