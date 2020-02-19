@@ -793,4 +793,11 @@ class Penduduk extends Admin_Controller {
 		}
 		redirect("penduduk");
 	}
+
+	public function list_penduduk_ajax()
+	{
+		$cari = $this->input->get('term');
+		$penduduk = $this->penduduk_model->autocomplete($cari);
+		echo $penduduk;
+	}
 }

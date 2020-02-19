@@ -48,6 +48,7 @@ class Data_persil_model extends CI_Model {
 		$sql = " FROM `data_persil` p
 				LEFT JOIN tweb_penduduk u ON u.id = p.id_pend
 				LEFT JOIN tweb_wil_clusterdesa w ON w.id = p.id_clusterdesa
+				LEFT JOIN data_persil_c_desa y ON y.id = p.id_c_desa
 			 	WHERE 1 ";
 		return $sql;
 	}
@@ -67,6 +68,13 @@ class Data_persil_model extends CI_Model {
 			if ($mana > 0)
 			{
 				$sql .= " AND (p.persil_peruntukan_id=".$mana.") ";
+			}
+		}
+				elseif($kat == "kelas")
+		{
+			if ($mana > 0)
+			{
+				$sql .= " AND (p.kelas=".$mana.") ";
 			}
 		}
 		$sql .= $this->search_sql();
@@ -89,10 +97,36 @@ class Data_persil_model extends CI_Model {
 		return $this->paging;
 	}
 
-	public function list_persil($kat='', $mana=0, $offset, $per_page)
+	public function paging_c_desa($kat='', $mana=0, $p=1)
 	{
-		$strSQL = "SELECT p.`id` as id, u.nik as nik, p.`nama` as nama, p.`jenis_pemilik`, p.`nama` as nopersil, p.`persil_jenis_id`, p.`id_clusterdesa`, p.`luas`, p.`kelas`, p.pemilik_luar,
-			p.rdate as tanggal_daftar,p.`no_sppt_pbb`, p.`persil_peruntukan_id`, u.nama as namapemilik, w.rt, w.rw, w.dusun".$this->filtered_sql($kat, $mana);
+		
+		$sql = "SELECT COUNT(*) AS jml FROM data_persil_c_desa WHERE 1 ";
+		$query = $this->db->query($sql);
+		$row = $query->row_array();
+		$jml_data = $row['jml'];
+
+		$this->load->library('paging');
+		$cfg['page'] = $p;
+		$cfg['per_page'] = $_SESSION['per_page'];
+		$cfg['num_rows'] = $jml_data;
+		$this->paging->init($cfg);
+
+		return $this->paging;
+	}
+
+	public function list_c_desa($kat='', $mana=0, $offset, $per_page)
+	{
+
+
+		$strSQL = "SELECT y.`id` AS id, y.`c_desa`, p.`id_c_desa`, u.nik AS nik, p.`id_pend`, p.`id_clusterdesa`,  p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,COUNT(p.id_c_desa) AS jumlah, p.`lokasi`, w.rt, w.rw, w.dusun, p.rdate as tanggal_daftar,
+			SUM(IF(p.`persil_jenis_id` = 1, p.`luas`,0)) as basah,
+			SUM(IF(p.`persil_jenis_id` = 2, p.`luas`,0)) as kering
+
+		FROM data_persil_c_desa y
+		LEFT JOIN data_persil p ON p.id_c_desa = y.id
+		LEFT JOIN tweb_penduduk u ON u.id = y.id_pend
+		LEFT JOIN tweb_wil_clusterdesa w ON w.id = u.id_cluster
+		GROUP by c_desa";
 		$strSQL .= " LIMIT ".$offset.",".$per_page;
 		$query = $this->db->query($strSQL);
 		if ($query->num_rows() > 0)
@@ -121,12 +155,12 @@ class Data_persil_model extends CI_Model {
 	public function get_persil($id)
 	{
 		$data = false;
-		$strSQL = "SELECT p.`id` as id, u.`nik` as nik, p.`jenis_pemilik` as jenis_pemilik, p.`nama` as nopersil, p.id_pend, p.`persil_jenis_id`, p.`id_clusterdesa`, p.`luas`,
-			p.`kelas`, p.pemilik_luar,
-			p.`no_sppt_pbb`, p.`persil_peruntukan_id`, u.nama as namapemilik, w.rt, w.rw, w.dusun,alamat_luar
+		$strSQL = "SELECT p.`id` as id, u.`nik` as nik, y.`c_desa`, p.`jenis_pemilik` as jenis_pemilik, p.`nama` as nopersil, p.id_pend, p.`id_c_desa`, p.`persil_jenis_id`, kelas, x.`kode`, p.`id_clusterdesa`, p.`luas`, p.`kelas`, p.`pajak`, p.`keterangan`, p.pemilik_luar, p.`no_sppt_pbb`, p.`lokasi`, p.`persil_peruntukan_id`, u.nama as namapemilik, w.rt, w.rw, w.dusun,alamat_luar
 			FROM `data_persil` p
 				LEFT JOIN tweb_penduduk u ON u.id = p.id_pend
 				LEFT JOIN tweb_wil_clusterdesa w ON w.id = p.id_clusterdesa
+				LEFT JOIN data_persil_kelas x ON x.id = p.persil_jenis_id
+				LEFT JOIN data_persil_c_desa y ON y.id = p.id_c_desa
 			 WHERE p.id = ".$id;
 		$query = $this->db->query($strSQL);
 		if ($query->num_rows()>0)
@@ -142,11 +176,95 @@ class Data_persil_model extends CI_Model {
 		return $data;
 	}
 
+	public function get_c_desa($id)
+	{
+		$data = false;
+		$strSQL = "SELECT y.`id` AS id, y.`id_pend`, y.`c_desa`, u.nik AS nik, p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,w.rt, w.rw, w.dusun
+		FROM data_persil_c_desa y
+		LEFT JOIN data_persil p ON p.id_c_desa = y.id
+		LEFT JOIN tweb_penduduk u ON u.id = y.id_pend
+		LEFT JOIN tweb_wil_clusterdesa w ON w.id = u.id_cluster
+		WHERE y.id =".$id ;
+		$query = $this->db->query($strSQL);
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->row_array();
+		}
+		else
+		{
+			$_SESSION["pesan"]= $strSQL;
+		}
+
+		if ($data['jenis_pemilik'] == 2)
+		{
+			$data['namapemilik'] = $data['pemilik_luar'];
+			$data['nik'] = "-";
+		}
+		return $data;
+	}
+
+	public function list_detail_c_desa($id)
+	{
+		$data = false;
+		$strSQL = "SELECT p.`id` as id, u.`nik` as nik, y.`c_desa`, p.`jenis_pemilik` as jenis_pemilik, p.`nama` as nopersil, p.id_pend, p.`id_c_desa`, p.`persil_jenis_id`, kelas, x.`kode`, p.`id_clusterdesa`, p.`luas`, 
+			p.`kelas`, p.`pajak`, p.`keterangan`, p.pemilik_luar,
+			p.`no_sppt_pbb`, p.`lokasi`, p.`persil_peruntukan_id`, u.nama as namapemilik, w.rt, w.rw, w.dusun,alamat_luar
+			FROM `data_persil` p
+				LEFT JOIN tweb_penduduk u ON u.id = p.id_pend
+				LEFT JOIN tweb_wil_clusterdesa w ON w.id = u.id_cluster
+				LEFT JOIN data_persil_kelas x ON x.id = p.persil_jenis_id
+				LEFT JOIN data_persil_c_desa y ON y.id = p.id_c_desa
+
+			 WHERE p.id_c_desa = ".$id;
+		$query = $this->db->query($strSQL);
+		if ($query->num_rows()>0)
+		{
+			$data = $query->result_array();
+		}
+
+		if ($data['jenis_pemilik'] == 2)
+		{
+			$data['namapemilik'] = $data['pemilik_luar'];
+			$data['nik'] = "-";
+		}
+		return $data;
+	}
+
+	public function list_persil($kat='', $mana=0, $offset, $per_page)
+	{
+		$strSQL = "SELECT p.`id` as id, u.nik as nik, y.`c_desa`,p.`nama` as nama, p.`jenis_pemilik`, p.`nama` as nopersil, p.`persil_jenis_id`, p.`id_clusterdesa`, p.`luas`, p.`kelas`, p.pemilik_luar,
+			p.rdate as tanggal_daftar,p.`no_sppt_pbb`, p.`lokasi`, p.`persil_peruntukan_id`, u.nama as namapemilik, w.rt, w.rw, w.dusun".$this->filtered_sql($kat, $mana);
+		$strSQL .= " LIMIT ".$offset.",".$per_page;
+		$query = $this->db->query($strSQL);
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->result_array();
+		}
+		else
+		{
+			$_SESSION["pesan"]= $strSQL;
+		}
+
+		$j = $offset;
+		for ($i=0; $i<count($data); $i++)
+		{
+			$data[$i]['no'] = $j + 1;
+			if (($data[$i]['jenis_pemilik']) == 2)
+			{
+				$data[$i]['namapemilik'] = $data[$i]['pemilik_luar'];
+				$data[$i]['nik'] = "-";
+			}
+			$j++;
+		}
+		return $data;
+	}
+
 	public function simpan_persil()
 	{
 		$hasil = false;
 		if (@$_POST["nik"])
 		{
+			//Update data Persil
 			if ($_POST["id"] > 0)
 			{
 				$data = array();
@@ -164,39 +282,101 @@ class Data_persil_model extends CI_Model {
 							get('tweb_penduduk')->row()->id;
 					}
 				}
+
 				$data['alamat_luar'] = $_POST["alamat_luar"];
+				$data['id_c_desa'] = $this->db->select('id')->
+							where('c_desa', ltrim($_POST['c_desa'], '0'))->
+							get('data_persil_c_desa')->row()->id;
 				$data['persil_jenis_id'] = $_POST["cid"];
 				$data['id_clusterdesa'] = $_POST["pid"];
 				$data['persil_peruntukan_id'] = $_POST["sid"];
 				$data['luas'] = $_POST["luas"];
 				$data['kelas'] = $_POST["kelas"];
+				$data['pajak'] = $_POST["pajak"];
+				$data['keterangan'] = $_POST["ket"];
+				$data['lokasi'] = $_POST["lokasi"];
 				$data['no_sppt_pbb'] = $_POST["sppt"];
 				$data['userID'] = $_SESSION['user'];
 				$outp = $this->db->where('id', $_POST['id'])->update('data_persil', $data);
 			}
 			else
 			{
+				//Insert data  C-Desa / Penambahan persil pada C-Desa
 				if (is_numeric($_POST["nik"]))
 				{
 					$data = array();
-					$data['nama'] = $_POST["nama"];
-					$data['jenis_pemilik'] = $_POST["jenis_pemilik"];
 					// Ambil id penduduk baru
 					$data['id_pend'] = $this->db->select('id')->
 						where('nik', $_POST['nik'])->
 						get('tweb_penduduk')->row()->id;
-					$data['persil_jenis_id'] = $_POST["cid"];
-					$data['id_clusterdesa'] = $_POST["pid"];
-					$data['persil_peruntukan_id'] = $_POST["sid"];
-					$data['luas'] = $_POST["luas"];
-					$data['kelas'] = $_POST["kelas"];
-					$data['no_sppt_pbb'] = $_POST["sppt"];
-					$data['userID'] = $_SESSION['user'];
-					$outp = $this->db->insert('data_persil', $data);
+
+					//Pengecekan No C-Desa Apakah sama dengan NIK
+					$query = $this->db->query("SELECT `id_pend` FROM `data_persil_c_desa` WHERE `id_pend` = ".$data['id_pend']);
+					if ($query->num_rows() > 0)
+					{
+						$arr['c_desa'] = $this->db->select(['id', 'c_desa'])->
+							where('id_pend', $data['id_pend'])->
+							get('data_persil_c_desa')->result_array();
+
+						if ( $arr['c_desa'][0]['c_desa'] <> ltrim($_POST['c_desa'], '0'))
+						{
+							$_SESSION["success"] = -1;
+							$_SESSION["pesan"] = "NIK Sudah ada, tetapi Nomor C-DESA tidak sama";
+						}
+						else
+						{
+							$data['id_c_desa'] = $arr['c_desa'][0]['id'];
+							$data['nama'] = $_POST["nama"];
+							$data['jenis_pemilik'] = $_POST["jenis_pemilik"];
+							$data['persil_jenis_id'] = $_POST["cid"];
+							$data['id_clusterdesa'] = $_POST["pid"];
+							$data['persil_peruntukan_id'] = $_POST["sid"];
+							$data['luas'] = $_POST["luas"];
+							$data['kelas'] = $_POST["kelas"];
+							$data['pajak'] = $_POST["pajak"];
+							$data['keterangan'] = $_POST["ket"];
+							$data['lokasi'] = $_POST["lokasi"];
+							$data['no_sppt_pbb'] = $_POST["sppt"];
+							$data['userID'] = $_SESSION['user'];
+							$outp = $this->db->insert('data_persil', $data);
+						}
+					} 
+					else 
+					{
+						//penambahan C-Desa Awal
+						$datac['id_pend'] =$data['id_pend'];
+						$datac['c_desa'] = ltrim($_POST['c_desa'], '0');
+						$outp = $this->db->insert('data_persil_c_desa', $datac);
+						$data['id_c_desa'] = $this->db->insert_id();
+						$data['nama'] = $_POST["nama"];
+						$data['jenis_pemilik'] = $_POST["jenis_pemilik"];
+						$data['persil_jenis_id'] = $_POST["cid"];
+						$data['id_clusterdesa'] = $_POST["pid"];
+						$data['persil_peruntukan_id'] = $_POST["sid"];
+						$data['luas'] = $_POST["luas"];
+						$data['kelas'] = $_POST["kelas"];
+						$data['pajak'] = $_POST["pajak"];
+						$data['keterangan'] = $_POST["ket"];
+						$data['lokasi'] = $_POST["lokasi"];
+						$data['no_sppt_pbb'] = $_POST["sppt"];
+						$data['userID'] = $_SESSION['user'];
+						$outp = $this->db->insert('data_persil', $data);
+						
+					}					
 				}
 				else
 				{
+					//Penambahan data Luar Desa
 					$data = array();
+					$datac['c_desa'] = ltrim($_POST['c_desa'], '0');
+
+					if ($_POST['id_c_desa'] > 0)
+						$data['id_c_desa'] = $_POST['id_c_desa'];
+					else 
+					{
+						$outp = $this->db->insert('data_persil_c_desa', $datac);
+						$data['id_c_desa'] = $this->db->insert_id();
+					}
 					$data['nama'] = $_POST["nama"];
 					$data['jenis_pemilik'] = $_POST["jenis_pemilik"];
 					$data['pemilik_luar'] = $_POST['nik'];
@@ -206,11 +386,15 @@ class Data_persil_model extends CI_Model {
 					$data['persil_peruntukan_id'] = $_POST["sid"];
 					$data['luas'] = $_POST["luas"];
 					$data['kelas'] = $_POST["kelas"];
+					$data['pajak'] = $_POST["pajak"];
+					$data['keterangan'] = $_POST["ket"];
+					$data['lokasi'] = $_POST["lokasi"];
 					$data['no_sppt_pbb'] = $_POST["sppt"];
 					$data['userID'] = $_SESSION['user'];
 					$outp = $this->db->insert('data_persil', $data);
 				}
 			}
+
 			if ($outp)
 			{
 				$_SESSION["success"] = 1;
@@ -223,7 +407,24 @@ class Data_persil_model extends CI_Model {
 			$_SESSION["success"] = -1;
 			$_SESSION["pesan"] = "Formulir belum/tidak terisi dengan benar";
 		}
+
 		return $hasil;
+	}
+
+	public function hapus_c_desa($id)
+	{
+		$strSQL = "DELETE  a, b FROM data_persil_c_desa a , data_persil b WHERE a.id = ".$id." AND b.id_c_desa = ".$id;
+		$hasil = $this->db->query($strSQL);
+		if ($hasil)
+		{
+			$_SESSION["success"] = 1;
+			$_SESSION["pesan"] = "Data Persil telah dihapus";
+		}
+		else
+		{
+			$_SESSION["success"] = -1;
+			$_SESSION["pesan"] = "Gagal menghapus data persil";
+		}
 	}
 
 	public function hapus_persil($id)
@@ -467,7 +668,6 @@ class Data_persil_model extends CI_Model {
 			$upd['kelas'] = $data->val($i, 7, $sheet);
 			$upd['no_sppt_pbb'] = $data->val($i, 8, $sheet);
 			$upd['persil_peruntukan_id'] = $data->val($i, 9, $sheet);
-
 			$outp = $this->db->insert('data_persil',$upd);
 		}
 
@@ -475,5 +675,65 @@ class Data_persil_model extends CI_Model {
 		else $_SESSION['success'] = -1;
 	}
 
+	public function list_persil_kelas($id=0)
+	{
+		$data = false;
+		if ($id != 0)
+		{
+			$data["jenis"] = $this->data_persil_model->list_persil_jenis();
+			$table = $data["jenis"][$id][0];
+			$strSQL = "SELECT id, kode, ndesc FROM data_persil_kelas WHERE `tipe` like '$table' ORDER BY `data_persil_kelas`.`kode` ASC";
+			$query = $this->db->query($strSQL);
+			if ($query->num_rows() > 0)
+			{
+				$data = array();
+				foreach ($query->result() as $row)
+				{
+					$data[$row->id] = array($row->kode, $row->ndesc);
+				}
+			}
+		}
+		else
+		{
+			$strSQL = "SELECT id, kode, ndesc FROM data_persil_kelas WHERE 1 ORDER BY `data_persil_kelas`.`kode` ASC";
+			$query = $this->db->query($strSQL);
+			if ($query->num_rows() > 0)
+			{
+				$data = array();
+				foreach ($query->result() as $row)
+				{
+					$data[$row->id] = array($row->kode, $row->ndesc);
+				}
+			}
+		}
+		return $data;
+	}
+
+	public function get_c_cetak($id, $jenis)
+	{
+		$data = false;
+		$strSQL = "SELECT p.`id` as id, u.`nik` as nik, y.`c_desa`, p.`jenis_pemilik` as jenis_pemilik, p.`nama` as nopersil, p.id_pend, p.`id_c_desa`, p.`persil_jenis_id`, kelas, x.`kode`, p.`id_clusterdesa`, p.`luas`, 
+			p.`kelas`, p.`pajak`, p.`keterangan`, p.pemilik_luar,
+			p.`no_sppt_pbb`, p.`lokasi`, p.`persil_peruntukan_id`, u.nama as namapemilik, w.rt, w.rw, w.dusun,alamat_luar
+			FROM `data_persil` p
+				LEFT JOIN tweb_penduduk u ON u.id = p.id_pend
+				LEFT JOIN tweb_wil_clusterdesa w ON w.id = p.id_clusterdesa
+				LEFT JOIN data_persil_kelas x ON x.id = p.persil_jenis_id
+				LEFT JOIN data_persil_c_desa y ON y.id = p.id_c_desa
+
+			 WHERE p.id_c_desa = ".$id." and persil_jenis_id = ".$jenis;
+		$query = $this->db->query($strSQL);
+		if ($query->num_rows()>0)
+		{
+			$data = $query->result_array();
+		}
+
+		if ($data['jenis_pemilik'] == 2)
+		{
+			$data['namapemilik'] = $data['pemilik_luar'];
+			$data['nik'] = "-";
+		}
+		return $data;
+	}
 }
 ?>
