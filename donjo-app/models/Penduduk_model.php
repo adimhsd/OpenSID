@@ -12,9 +12,17 @@
 		$this->penolong_kelahiran = array_flip(unserialize(PENOLONG_KELAHIRAN));
 	}
 
-	public function autocomplete($cari="")
+
+	public function autocomplete($cari='')
 	{
-		$str = autocomplete_str($cari, 'nama', 'tweb_penduduk');
+		$this->db->select('nama')
+			->distinct()
+			->order_by('nama')
+			->from('tweb_penduduk');
+		if ($cari) $this->db->where("nama like '%$cari%'");
+		$data = $this->db->get()->result_array();
+
+		$str = autocomplete_data_ke_str($data);
 		return $str;
 	}
 

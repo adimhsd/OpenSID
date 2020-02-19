@@ -1,28 +1,22 @@
 <script>
-	$(function()
-	{
-	$( "#cari" ).autocomplete(
-	{
-      source: function( request, response ) 
-      {
-        $.ajax( 
-        {
-          url: "penduduk/list_penduduk_ajax",
-          dataType: "json",
-          data: 
-          {
-            term: request.term
-          },
-          success: function( data ) 
-          {
-            response( data );
-          }
-        } );
-      },
-      minLength: 2,
-      maxShowItems: 10,
-    } );
-    });
+  $( function() {
+	  $( "#cari" ).autocomplete({
+	    source: function( request, response ) {
+	      $.ajax( {
+					type: "POST",
+	        url: '<?= site_url("penduduk/autocomplete")?>',
+	        dataType: "json",
+	        data: {
+	          cari: request.term
+	        },
+	        success: function( data ) {
+	          response( JSON.parse( data ));
+	        }
+	      } );
+	    },
+	    minLength: 2,
+	  } );
+  } );
 </script>
 <style>
 	.input-sm

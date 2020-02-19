@@ -99,7 +99,6 @@ class Penduduk extends Admin_Controller {
 		$data['per_page'] = $_SESSION['per_page'];
 		$data['paging'] = $this->penduduk_model->paging($p, $o);
 		$data['main'] = $this->penduduk_model->list_data($o, $data['paging']->offset, $data['paging']->per_page);
-		$data['keyword'] = $this->penduduk_model->autocomplete();
 		$data['list_agama'] = $this->penduduk_model->list_agama();
 		$data['list_dusun'] = $this->penduduk_model->list_dusun();
 		$data['list_status_dasar'] = $this->referensi_model->list_data('tweb_status_dasar');
@@ -794,10 +793,11 @@ class Penduduk extends Admin_Controller {
 		redirect("penduduk");
 	}
 
-	public function list_penduduk_ajax()
+
+	public function autocomplete()
 	{
-		$cari = $this->input->get('term');
-		$penduduk = $this->penduduk_model->autocomplete($cari);
-		echo $penduduk;
+		$data = $this->penduduk_model->autocomplete($this->input->post('cari'));
+		echo json_encode($data);
 	}
+
 }
