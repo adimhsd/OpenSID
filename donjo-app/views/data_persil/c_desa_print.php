@@ -43,9 +43,9 @@
 							<th >NAMA</th>
 							<th >NIK</th>
 							<th >ALAMAT</th>
-							<th >BASAH
-							<p>(M2)</th>
-							<th >KERING<p>(M<sub>2</sub>)</th>
+							<?php foreach ($persil_jenis as $key => $item): ?>
+	                            <th> <?= $item[1] ?> <p>(M2)</p></th>
+	                         <?php endforeach ?>
 						</tr>
 						</tr>
 					</thead>
@@ -63,8 +63,9 @@
 								<td>-</td>
 								<td><?= $persil["alamat_luar"]?></td>
 							<?php endif; ?>
-							<td><?= $persil['basah']?></td>
-							<td><?= $persil['kering']?></td>
+							<?php foreach ($persil_jenis as $key => $item): ?>
+	                            <td> <?= $persil[$item[0]] ?></td>
+	                         <?php endforeach ?> 
 							<td><?= tgl_indo($persil['tanggal_daftar'])?></td>
 						</tr>
 						<?php endforeach; ?>

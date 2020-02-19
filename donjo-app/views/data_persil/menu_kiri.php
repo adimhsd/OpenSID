@@ -13,7 +13,6 @@
 			<li><a href="<?= site_url('data_persil/persil')?>"><i class='fa fa-list'></i>Daftar Persil</a></li>
 			<li><a href="<?= site_url('data_persil/import')?>" data-remote="false" data-toggle="modal" data-target="#modalBox" data-title="Impor Data Persil"><i class='fa fa-upload'></i>Impor Data C-Desa</a></li>
 			<li><a href="<?= site_url('data_persil/panduan')?>"><i class='fa fa-question-circle'></i>Panduan C-Desa</a></li>
-			<li><a href="<?= site_url('data_persil/panduan')?>"><i class='fa fa-question-circle'></i>Panduan Persil</a></li>
 		</ul>
 	</div>
 </div>
@@ -31,7 +30,7 @@
 					<li><a href="<?= site_url("data_persil/persil/jenis/$key/")?>" title="<?=$item[1]?>"><i class='fa fa-list'></i> <?=$item[0]?></a></li>
 				<?php endforeach;?>
 			<?php endif; ?>
-			<li><a href="<?= site_url('data_persil/persil_jenis')?>"><i class='fa fa-plus'></i> Tambah Jenis Persil</a></li>
+			<li><a href="<?= site_url('data_persil/persil_jenis')?>"><i class='fa fa-edit'></i> Edit Jenis Persil</a></li>
 		</ul>
 	</div>
 </div>
@@ -49,7 +48,7 @@
 					<li><a href="<?= site_url("data_persil/persil/kelas/$key/")?>" title="<?=$item['1']?>"><i class='fa fa-list'></i> Kelas <?=$item['0']?></a></li>
 				<?php endforeach;?>
 			<?php endif; ?>
-			<li><a href="<?= site_url('data_persil/persil_kelas')?>"><i class='fa fa-plus'></i> Tambah Jenis Kelas</a></li>
+			<li><a href="<?= site_url('data_persil/persil_kelas')?>"><i class='fa fa-edit'></i> Edit Jenis Kelas</a></li>
 		</ul>
 	</div>
 </div>

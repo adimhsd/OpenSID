@@ -116,11 +116,10 @@ class Data_persil_model extends CI_Model {
 
 	public function list_c_desa($kat='', $mana=0, $offset, $per_page)
 	{
-
-
-		$strSQL = "SELECT y.`id` AS id, y.`c_desa`, p.`id_c_desa`, u.nik AS nik, p.`id_pend`, p.`id_clusterdesa`,  p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,COUNT(p.id_c_desa) AS jumlah, p.`lokasi`, w.rt, w.rw, w.dusun, p.rdate as tanggal_daftar,
-			SUM(IF(p.`persil_jenis_id` = 1, p.`luas`,0)) as basah,
-			SUM(IF(p.`persil_jenis_id` = 2, p.`luas`,0)) as kering
+		
+		$strSQL = "SELECT y.`id` AS id, y.`c_desa`, p.`id_c_desa`, u.nik AS nik, p.`id_pend`, p.`id_clusterdesa`,  p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,COUNT(p.id_c_desa) AS jumlah, ".
+			$this->persil_jenis_id()."
+			p.`lokasi`, w.rt, w.rw, w.dusun, p.rdate as tanggal_daftar
 
 		FROM data_persil_c_desa y
 		LEFT JOIN data_persil p ON p.id_c_desa = y.id
@@ -151,6 +150,20 @@ class Data_persil_model extends CI_Model {
 		}
 		return $data;
 	}
+
+	private function persil_jenis_id()
+	{
+		$persil_jenis_id = $this->list_persil_jenis();
+		foreach ($persil_jenis_id as $key => $value) 
+		{
+
+			$sql .=" SUM(IF(p.`persil_jenis_id` =  $key, p.`luas`,0)) as $value[0], ";
+		}
+
+		return $sql;
+	}
+
+
 
 	public function get_persil($id)
 	{
@@ -413,8 +426,18 @@ class Data_persil_model extends CI_Model {
 
 	public function hapus_c_desa($id)
 	{
-		$strSQL = "DELETE  a, b FROM data_persil_c_desa a , data_persil b WHERE a.id = ".$id." AND b.id_c_desa = ".$id;
-		$hasil = $this->db->query($strSQL);
+		$strSQL = "SELECT id_c_desa FROM data_persil WHERE 1";
+		$query = $this->db->query($strSQL);
+		if ($query->num_rows() > 0)
+		{
+			$strSQL = "DELETE  a, b FROM data_persil_c_desa a , data_persil b WHERE a.id = ".$id." AND b.id_c_desa = ".$id;
+			$hasil = $this->db->query($strSQL);
+		}
+		else
+		{
+			$strSQL = "DELETE FROM data_persil_c_desa WHERE id = ".$id;
+			$hasil = $this->db->query($strSQL);
+		}
 		if ($hasil)
 		{
 			$_SESSION["success"] = 1;
@@ -604,12 +627,12 @@ class Data_persil_model extends CI_Model {
 	{
 		if ($this->input->post('id') == 0)
 		{
-			$strSQL = "INSERT INTO `data_persil_jenis`(`nama`,`ndesc`) VALUES('".fixSQL($this->input->post('nama'))."','".fixSQL($this->input->post('ndesc'))."')";
+			$strSQL = "INSERT INTO `data_persil_jenis`(`nama`,`ndesc`) VALUES('".strtoupper(fixSQL($this->input->post('nama')))."','".fixSQL($this->input->post('ndesc'))."')";
 		}
 		else
 		{
 			$strSQL = "UPDATE `data_persil_jenis` SET
-			`nama`='".fixSQL($this->input->post('nama'))."',
+			`nama`='".strtoupper(fixSQL($this->input->post('nama')))."',
 			`ndesc`='".fixSQL($this->input->post('ndesc'))."'
 			 WHERE id=".$this->input->post('id');
 		}
@@ -646,6 +669,102 @@ class Data_persil_model extends CI_Model {
 		}
 	}
 
+
+
+	public function list_persil_kelas($id=0)
+	{
+		$data = false;
+		if ($id != 0)
+		{
+			$data["jenis"] = $this->data_persil_model->list_persil_jenis();
+			$table = $data["jenis"][$id][0];
+			$strSQL = "SELECT id, kode, ndesc, tipe FROM data_persil_kelas WHERE `tipe` like '$table' ORDER BY `data_persil_kelas`.`kode` ASC";
+			$query = $this->db->query($strSQL);
+			if ($query->num_rows() > 0)
+			{
+				$data = array();
+				foreach ($query->result() as $row)
+				{
+					$data[$row->id] = array($row->kode, $row->ndesc, $row->tipe);
+				}
+			}
+		}
+		else
+		{
+			$strSQL = "SELECT id, kode, ndesc, tipe FROM data_persil_kelas WHERE 1 ORDER BY `data_persil_kelas`.`kode` ASC";
+			$query = $this->db->query($strSQL);
+			if ($query->num_rows() > 0)
+			{
+				$data = array();
+				foreach ($query->result() as $row)
+				{
+					$data[$row->id] = array($row->kode, $row->ndesc, $row->tipe);
+				}
+			}
+		}
+		return $data;
+	}
+
+	public function get_persil_kelas($id=0)
+	{
+		$data = false;
+		$strSQL = "SELECT id, kode, tipe, ndesc FROM data_persil_kelas WHERE id = ".$id;
+		$query = $this->db->query($strSQL);
+		if ($query->num_rows() > 0)
+		{
+			$data = array();
+			$data[$id] = $query->row_array();
+		}
+		return $data;
+	}
+
+	public function update_persil_kelas()
+	{
+		if ($this->input->post('id') == 0)
+		{
+			$strSQL = "INSERT INTO `data_persil_kelas`(`kode`, `tipe`,`ndesc`) VALUES('".fixSQL($this->input->post('nama'))."','".strtoupper(fixSQL($this->input->post('kode')))."','".fixSQL($this->input->post('ndesc'))."')";
+		}
+		else
+		{
+			$strSQL = "UPDATE `data_persil_jenis` SET
+			`nama`='".fixSQL($this->input->post('nama'))."',
+			`kode`= '".strtoupper(fixSQL($this->input->post('kode')))."',
+			`ndesc`='".fixSQL($this->input->post('ndesc'))."'
+			 WHERE id=".$this->input->post('id');
+		}
+
+		$data["db"] = $strSQL;
+		$hasil = $this->db->query($strSQL);
+		if ($hasil)
+		{
+			$data["transaksi"] = true;
+			$data["pesan"] = "Data Kelas Persil ".fixSQL($this->input->post('nama'))." telah disimpan/diperbarui";
+			$_SESSION["success"] = 1;
+			$_SESSION["pesan"] = "Data Kelas Persil ".fixSQL($this->input->post('nama'))." telah disimpan/diperbarui";
+		}
+		else
+		{
+			$data["transaksi"] = false;
+			$data["pesan"] = "ERROR ".$strSQL;
+		}
+		return $data;
+	}
+
+	public function hapus_kelas($id)
+	{
+		$strSQL = "DELETE FROM `data_persil_kelas` WHERE id = ".$id;
+		$hasil = $this->db->query($strSQL);
+		if ($hasil)
+		{
+			$_SESSION["success"] = 1;
+			$_SESSION["pesan"] = "Data Kelas Persil telah dihapus";
+		}
+		else
+		{
+			$_SESSION["success"] = -1;
+		}
+	}
+
 	public function impor_persil()
 	{
 		$this->load->library('Spreadsheet_Excel_Reader');
@@ -673,40 +792,6 @@ class Data_persil_model extends CI_Model {
 
 		if ($outp) $_SESSION['success'] = 1;
 		else $_SESSION['success'] = -1;
-	}
-
-	public function list_persil_kelas($id=0)
-	{
-		$data = false;
-		if ($id != 0)
-		{
-			$data["jenis"] = $this->data_persil_model->list_persil_jenis();
-			$table = $data["jenis"][$id][0];
-			$strSQL = "SELECT id, kode, ndesc FROM data_persil_kelas WHERE `tipe` like '$table' ORDER BY `data_persil_kelas`.`kode` ASC";
-			$query = $this->db->query($strSQL);
-			if ($query->num_rows() > 0)
-			{
-				$data = array();
-				foreach ($query->result() as $row)
-				{
-					$data[$row->id] = array($row->kode, $row->ndesc);
-				}
-			}
-		}
-		else
-		{
-			$strSQL = "SELECT id, kode, ndesc FROM data_persil_kelas WHERE 1 ORDER BY `data_persil_kelas`.`kode` ASC";
-			$query = $this->db->query($strSQL);
-			if ($query->num_rows() > 0)
-			{
-				$data = array();
-				foreach ($query->result() as $row)
-				{
-					$data[$row->id] = array($row->kode, $row->ndesc);
-				}
-			}
-		}
-		return $data;
 	}
 
 	public function get_c_cetak($id, $jenis)

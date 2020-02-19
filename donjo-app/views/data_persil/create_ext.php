@@ -19,14 +19,15 @@
 							<div class="col-sm-12">
 								<form name='mainform' id="validasi" action="<?= site_url('data_persil/simpan_persil')?>" method="POST"  class="form-horizontal">
 									<div class="box-body">
-										<input name="jenis_pemilik" type="hiddens" value="2">
-										<input name="id_c_desa" type="hiddens" value="<?= $persil_detail["id"] ?>">
+										<input name="jenis_pemilik" type="hidden" value="2">
 										<div class="form-group">
 											<label for="nik" class="col-sm-3 control-label">Nama Pemilik</label>
 											<div class="col-sm-8">
 												<input name="nik"  class="form-control input-sm required" type="text" placeholder="Nama Pemilik" value="<?= $persil_detail["namapemilik"] ?>">
 												<?php if ($mode === 'edit'): ?>
-													<input type="hiddens" name="id" value="<?= $persil_detail["id"] ?>"/>
+													<input type="hidden" name="id" value="<?= $persil_detail["id"] ?>"/>
+												<?php elseif ($mode === 'add'): ?>
+													<input name="id_c_desa" type="hidden" value="<?= $persil_detail["id"] ?>">
 												<?php endif; ?>
 											</div>
 										</div>

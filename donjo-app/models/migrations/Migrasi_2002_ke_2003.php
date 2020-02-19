@@ -19,6 +19,18 @@ class Migrasi_2002_ke_2003 extends CI_model {
 				  PRIMARY KEY (`id`)
 			)";
 			$this->db->query($query);
+
+			$query = "INSERT INTO `data_persil_kelas` (`kode`, `tipe`,`ndesc`) VALUES
+				('S-1', 'SAWAH', 'Persawahan Dekat dengan Pemukiman'),
+				('S-2', 'SAWAH', 'Persawahan Agak Jauh dengan Pemukiman'),
+				('S-3', 'SAWAH', 'Persawahan Jauh dengan Pemukiman'),
+				('S-4', 'SAWAH', 'Persawahan Sangat Jauh dengan Pemukiman'),
+				('D-1', 'KERING', 'Lahan Kering Dekat dengan Pemukiman'),
+				('D-2', 'KERING', 'Lahan Kering Agak Jauh dengan Pemukiman'),
+				('D-3', 'KERING', 'Lahan Kering Jauh dengan Pemukiman'),
+				('D-4', 'KERING', 'Lahan Kering Sangat Jauh dengan Pemukiman')
+			";
+			$this->db->query($query);
 		}
 
 		// Buat tabel id C-DESA
@@ -35,6 +47,7 @@ class Migrasi_2002_ke_2003 extends CI_model {
 			$this->db->query($query);
 		}
 
+		//tambahkan kolom untuk beberapa data persil
 		if (!$this->db->field_exists('id_c_desa','data_persil'))
 		{
 			$this->db->query("ALTER TABLE data_persil ADD `id_c_desa` INT NOT NULL AFTER `id`");
@@ -43,6 +56,20 @@ class Migrasi_2002_ke_2003 extends CI_model {
 			$this->db->query("ALTER TABLE data_persil ADD `lokasi` TEXT  NULL AFTER `pemilik_luar`");
 		}
 
-		
+		//tambahkan Persil Jenis Sebagai kunci kelas
+		$strSQL = "SELECT nama FROM data_persil_jenis WHERE nama = 'SAWAH'";
+		$query = $this->db->query($strSQL);
+		if ($query->num_rows() <= 0)
+		{
+			$this->db->query("INSERT INTO `data_persil_jenis` (`nama`, `ndesc`) VALUES('SAWAH', 'SAWAH')");
+		}
+
+		$strSQL = "SELECT nama FROM data_persil_jenis WHERE nama = 'KERING'";
+		$query = $this->db->query($strSQL);
+		if ($query->num_rows() <= 0)
+		{
+			$this->db->query("INSERT INTO `data_persil_jenis` (`nama`, `ndesc`) VALUES('KERING', 'TANAH kERING')");
+		}
+
 	}
 }

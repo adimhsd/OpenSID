@@ -1,9 +1,11 @@
 <?php
-	if ($persil_jenis_detail):
-		$nama = $persil_jenis_detail[$id]["nama"];
-		$ndesc = $persil_jenis_detail[$id]["ndesc"];
+	if ($persil_kelas_detail):
+		$nama = $persil_kelas_detail[$id]["kode"];
+		$tipe = $persil_kelas_detail[$id]["tipe"];
+		$ndesc = $persil_kelas_detail[$id]["ndesc"];
 	else:
 		$nama = "";
+		$tipe = "";
 		$ndesc = "";
 		$id = 0;
 	endif;
@@ -14,7 +16,7 @@
 		<ol class="breadcrumb">
 			<li><a href="<?= site_url('hom_sid')?>"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="<?= site_url('data_persil/clear')?>"> Daftar Persil</a></li>
-			<li class="active">Pengelolaan Jenis Persil</li>
+			<li class="active">Pengelolaan Kelas Persil</li>
 		</ol>
 	</section>
 	<section class="content" id="maincontent">
@@ -28,9 +30,20 @@
 					<form id="validasi" action="<?= $form_action?>" method="POST" class="form-horizontal">
 						<div class="box-body">
 							<div class="form-group">
-								<label class="control-label col-sm-3" for="nama">Nama Jenis Persil</label>
+								<label for="cid"  class="col-sm-3 control-label required">Jenis Persil</label>
+								<div class="col-sm-4">
+									<select class="form-control input-sm required" id="cid" name="cid" >
+										<option value>-- Pilih Jenis Persil--</option>
+										<?php foreach ($persil_jenis as $key=>$item): ?>
+											<option value="<?= $item[0]?>" <?php if ($item[0]==$tipe): ?>selected<?php endif; ?>><?= $item[0]?></option>
+										<?php endforeach;?>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3 required" for="nama">Nama Kelas Persil</label>
 								<div class="col-sm-8">
-									<input name="nama" class="form-control input-sm" type="text" placeholder="Tuliskan Jenis Persil" value="<?=$nama?>"></input>
+									<input name="nama" class="form-control input-sm required" type="text" placeholder="Tuliskan Jenis Persil" value="<?=$nama?>">
 								<input type="hidden" name="id" value="<?=$id?>">
 								</div>
 							</div>
@@ -51,7 +64,7 @@
 				<?php endif; ?>
 					<div class="box-body">
 						<?php if ($persil_jenis): ?>
-								<?php if (count($persil_jenis)>0): ?>
+								<?php if (count($persil_kelas)>0): ?>
 									<div class="col-sm-12">
 										<div class="table-responsive">
 											<table class="table table-bordered dataTable table-hover">
@@ -59,19 +72,21 @@
 													<tr>
 													<th>No</th>
 													<th>Aksi</th>
+													<th>Tipe</th>
 													<th>Nama</th>
 													<th>Ketarangan</th>
 												</thead>
 												<tbody>
-													<?php $nomer =0; foreach ($persil_jenis as $key=>$item): $nomer++;?>
+													<?php $nomer =0; foreach ($persil_kelas as $key=>$item): $nomer++;?>
 														<tr>
 															<td><?=$nomer?></td>
 															<td nowrap>
-																<a href="<?= site_url("data_persil/index/jenis/".$key)?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
-																<a href="<?= site_url("data_persil/persil_jenis/".$key)?>" class="btn bg-orange btn-flat btn-sm"  title="Ubah"><i class="fa fa-edit"></i></a>
-																<a href="#" data-href="<?= site_url("data_persil/hapus_persil_jenis/".$key)?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
+																<a href="<?= site_url("data_persil/persil/kelas/".$key)?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
+																<a href="<?= site_url("data_persil/persil_kelas/".$key)?>" class="btn bg-orange btn-flat btn-sm"  title="Ubah"><i class="fa fa-edit"></i></a>
+																<a href="#" data-href="<?= site_url("data_persil/hapus_persil_kelas/".$key)?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
 															</td>
-															<td width="30%"><a href="<?php site_url('data_persil/index/jenis/'.$key.'/')?>"><?=$item[0]?></a></td>
+															<td width="30%"><a href="<?= site_url('data_persil/persil/kelas/'.$key.'/')?>"><?=$item[2]?></a></td>
+															<td width="30%"><a href="<?= site_url('data_persil/persil/kelas/'.$key.'/')?>"><?=$item[0]?></a></td>
 															<td width="50%"><?= $item[1] ?></td>
 														</tr>
 													<?php endforeach; ?>
@@ -87,7 +102,7 @@
 											<h3 class="box-title">Belum Ada Data</h3>
 										</div>
 										<div class="box-body">
-											Silakan ditambahkan data Jenis Persil dengan menggunakan formulir dari menu <a href="<?php site_url("data_persil/persil_jenis")?>"><i class="icon-plus"></i> Tambah Data Jenis Persil</a>
+											Silakan ditambahkan data Jenis Persil dengan menggunakan formulir dari menu <a href="<?= site_url("data_persil/persil_jenis")?>"><i class="icon-plus"></i> Tambah Data Jenis Persil</a>
 										</div>
 									</div>
 								</div>

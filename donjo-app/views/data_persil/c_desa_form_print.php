@@ -1,4 +1,3 @@
-<html>
 <?php $this->load->view('print/headjs.php');?>
 <body>
     <div id="content" class="container_12 clearfix">
@@ -47,8 +46,9 @@
                                 <thead>
 
                                   <tr class="border thick">
-                                    <th colspan="6" class="head batas" >Sawah</th>
-                                    <th colspan="6" class="head">Tanah Kering</th>
+                                    <?php foreach ($persil_jenis as $key => $value): ?>
+                                        <th colspan="6" class="head batas" ><?= $value[1] ?></th>
+                                    <?php endforeach ?>
                                 </tr>
                                 <tr class="bg">
                                     <th rowspan="3" width="70">Nomor Persil / Blok</th>
@@ -81,21 +81,16 @@
                                 
                                 
 
-                                <?php for ($i=0; $i < 20; $i++) { ?>
+                                <?php for ($i=0; $i < 16; $i++) { ?>
                                     <tr>
-                                    <td class="row"><?= $sawah[$i]["nopersil"] ?></td>
-                                <td class="row"  ><?= $sawah[$i]["kode"] ?></td>
-                                <td class="row" ><?= $sawah[$i]["ha"] ?></td>
-                                <td class="row" ><?= $sawah[$i]["luas"] ?></td>
-                                <td class="row" ><?= $sawah[$i]["pajak"] ?></td>
-                                <td class="row batas" ><?= $sawah[$i]["keterangan"] ?></td>
-                                  
-                                    <td class="row"><?= $kering[$i]["nopersil"] ?></td>
-                                <td class="row"  ><?= $kering[$i]["kode"] ?></td>
-                                <td class="row" ><?= $kering[$i]["ha"] ?></td>
-                                <td class="row" ><?= $kering[$i]["luas"] ?></td>
-                                <td class="row" ><?= $kering[$i]["pajak"] ?></td>
-                                <td class="row" ><?= $kering[$i]["keterangan"] ?></td>
+                                        <?php foreach ($persil_jenis as $key => $value): ?>
+                                            <td class="row" > <?= ${$value[0]}[$i]["nopersil"] ?></td>
+                                            <td class="row" ><?= ${$value[0]}[$i]["kode"] ?></td>
+                                            <td class="row" ><?= ${$value[0]}[$i]["ha"] ?></td>
+                                            <td class="row" ><?= ${$value[0]}[$i]["luas"] ?></td>
+                                            <td class="row" ><?= ${$value[0]}[$i]["pajak"] ?></td>
+                                            <td class="row batas" ><?= ${$value[0]}[$i]["keterangan"] ?></td> 
+                                         <?php endforeach ?> 
                                     </tr>
                                <?php  }   ?>
                             </tbody>
@@ -119,6 +114,7 @@
                     </div>
                 </div>
             </div>
-        </body>
-        </html>
+        </div>
+    </body>
+</html>
 
