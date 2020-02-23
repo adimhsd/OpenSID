@@ -346,12 +346,8 @@ class Data_persil extends Admin_Controller {
 		$header = $this->header_model->get_data();
 		$data['desa'] = $header['desa'];
 		$data["persil_detail"] = $this->data_persil_model->get_c_desa($id);
-		$data["persil_lokasi"] = $this->data_persil_model->list_dusunrwrt();
-		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
-		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
-		foreach ($data["persil_jenis"] as $key => $item) {
-			$data[$item[0]] = $this->data_persil_model->get_c_cetak($id, $key);
-		}
+		$data['basah']= $this->data_persil_model->get_c_cetak($id, 'S');
+		$data['kering']= $this->data_persil_model->get_c_cetak($id, 'D');
 		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
 		$this->load->view('data_persil/c_desa_form_print', $data);
 	}

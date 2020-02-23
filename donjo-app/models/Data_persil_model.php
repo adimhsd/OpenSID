@@ -714,7 +714,7 @@ class Data_persil_model extends CI_Model {
 		else $_SESSION['success'] = -1;
 	}
 
-	public function get_c_cetak($id, $jenis)
+	public function get_c_cetak($id, $tipe='')
 	{
 		$data = false;
 		$strSQL = "SELECT p.`id` as id, u.`nik` as nik, y.`c_desa`, p.`jenis_pemilik` as jenis_pemilik, p.`nama` as nopersil, p.id_pend, p.`id_c_desa`, p.`persil_jenis_id`, kelas, x.`kode`, p.`id_clusterdesa`, p.`luas`, 
@@ -726,7 +726,7 @@ class Data_persil_model extends CI_Model {
 				LEFT JOIN ref_persil_kelas x ON x.id = p.kelas
 				LEFT JOIN data_persil_c_desa y ON y.id = p.id_c_desa
 
-			 WHERE p.id_c_desa = ".$id." and persil_jenis_id = ".$jenis;
+			 WHERE p.id_c_desa = ".$id." AND x.kode LIKE '%".$tipe."%'";
 		$query = $this->db->query($strSQL);
 		if ($query->num_rows()>0)
 		{
