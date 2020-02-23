@@ -108,7 +108,7 @@ class Data_persil extends Admin_Controller {
 		$data["persil_lokasi"] = $this->data_persil_model->list_dusunrwrt();
 		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
 		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
-		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas($data["persil_detail"]["persil_jenis_id"]);
+		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
 		$nav['act'] = 7;
 		$this->load->view('nav',$nav);
 		$this->load->view('data_persil/detail', $data);
@@ -125,7 +125,7 @@ class Data_persil extends Admin_Controller {
 		$data["persil_lokasi"] = $this->data_persil_model->list_dusunrwrt();
 		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
 		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
-		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas($data["persil_detail"]["persil_jenis_id"]);
+		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
 		$nav['act'] = 7;
 		$this->load->view('nav',$nav);
 		$this->load->view('data_persil/detail_persil', $data);
@@ -168,7 +168,7 @@ class Data_persil extends Admin_Controller {
 		$data["persil_lokasi"] = $this->data_persil_model->list_dusunrwrt();
 		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
 		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
-		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas($data["persil_detail"]["persil_jenis_id"]);
+		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
 		$nav['act'] = 7;
 		$this->load->view('nav', $nav);
 		$this->load->view('data_persil/create', $data);
@@ -198,7 +198,7 @@ class Data_persil extends Admin_Controller {
 		$data["persil_lokasi"] = $this->data_persil_model->list_dusunrwrt();
 		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
 		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
-		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas($data["persil_detail"]["persil_jenis_id"]);
+		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
 		$nav['act'] = 7;
 		$this->load->view('nav', $nav);
 		$this->load->view('data_persil/create_ext', $data);
@@ -255,44 +255,6 @@ class Data_persil extends Admin_Controller {
 		$this->redirect_hak_akses('h', "data_persil/persil_jenis");
 		$this->data_persil_model->hapus_jenis($id);
 		redirect("data_persil/persil_jenis");
-	}
-
-	public function persil_kelas($id=0)
-	{
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-		$this->form_validation->set_rules('nama', 'Nama Jenis Persil', 'required');
-		$header = $this->header_model->get_data();
-		$header['minsidebar'] = 1;
-		$this->load->view('header', $header);
-		$nav['act'] = 7;
-		$this->load->view('nav', $nav);
-		$data["id"] = $id;
-		if ($this->form_validation->run() === FALSE)
-		{
-			$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
-			$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
-			$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
-			$data["persil_kelas_detail"] = $this->data_persil_model->get_persil_kelas($id);
-			$data["hasil"] = false;
-			$this->load->view('data_persil/persil_kelas', $data);
-		}
-		else
-		{
-			$data["hasil"] = $this->data_persil_model->update_persil_kelas($id);
-			$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
-			$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
-			$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
-			$data["persil_kelas_detail"] = $this->data_persil_model->get_persil_kelas($id);
-			$this->load->view('data_persil/persil_kelas', $data);
-		}
-		$this->load->view('footer');
-	}
-
-	public function hapus_persil_kelas($id){
-		$this->redirect_hak_akses('h', "data_persil/persil_kelas");
-		$this->data_persil_model->hapus_kelas($id);
-		redirect("data_persil/persil_kelas");
 	}
 
 	public function persil_peruntukan($id=0)
@@ -390,7 +352,7 @@ class Data_persil extends Admin_Controller {
 		foreach ($data["persil_jenis"] as $key => $item) {
 			$data[$item[0]] = $this->data_persil_model->get_c_cetak($id, $key);
 		}
-		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas($data["persil_detail"]["persil_jenis_id"]);
+		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
 		$this->load->view('data_persil/c_desa_form_print', $data);
 	}
 

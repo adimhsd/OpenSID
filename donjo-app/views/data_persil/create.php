@@ -93,10 +93,9 @@
 											<div class="col-sm-4">
 												<select class="form-control input-sm required" id="kelas" name="kelas"  type="text"  placeholder="Tuliskan Kelas Tanah" >
 													<option value>-- Pilih Jenis Kelas--</option>
-													<?php foreach ($persil_kelas  as $key=>$item): ?>
-														<option value="<?= $key ?>" <?php if ($key==$persil_detail["kelas"]): ?>selected<?php endif; ?>><?= $item['0']?></option>
+													<?php foreach ($persil_kelas  as $item): ?>
+														<option value="<?= $item['id'] ?>" <?php selected($item['id'], $persil_detail["kelas"]); ?>><?= $item['kode'].' '.$item['ndesc']?></option>
 													<?php endforeach;?>
-
 												</select>
 											</div>
 										</div>

@@ -172,7 +172,7 @@ class Data_persil_model extends CI_Model {
 			FROM `data_persil` p
 				LEFT JOIN tweb_penduduk u ON u.id = p.id_pend
 				LEFT JOIN tweb_wil_clusterdesa w ON w.id = p.id_clusterdesa
-				LEFT JOIN data_persil_kelas x ON x.id = p.persil_jenis_id
+				LEFT JOIN ref_persil_kelas x ON x.id = p.kelas
 				LEFT JOIN data_persil_c_desa y ON y.id = p.id_c_desa
 			 WHERE p.id = ".$id;
 		$query = $this->db->query($strSQL);
@@ -225,7 +225,7 @@ class Data_persil_model extends CI_Model {
 			FROM `data_persil` p
 				LEFT JOIN tweb_penduduk u ON u.id = p.id_pend
 				LEFT JOIN tweb_wil_clusterdesa w ON w.id = p.id_clusterdesa
-				LEFT JOIN data_persil_kelas x ON x.id = p.persil_jenis_id
+				LEFT JOIN ref_persil_kelas x ON x.id = p.kelas
 				LEFT JOIN data_persil_c_desa y ON y.id = p.id_c_desa
 
 			 WHERE p.id_c_desa = ".$id;
@@ -671,44 +671,18 @@ class Data_persil_model extends CI_Model {
 
 
 
-	public function list_persil_kelas($id=0)
+	public function list_persil_kelas()
 	{
-		$data = false;
-		if ($id != 0)
-		{
-			$data["jenis"] = $this->data_persil_model->list_persil_jenis();
-			$table = $data["jenis"][$id][0];
-			$strSQL = "SELECT id, kode, ndesc, tipe FROM data_persil_kelas WHERE `tipe` like '$table' ORDER BY `data_persil_kelas`.`kode` ASC";
-			$query = $this->db->query($strSQL);
-			if ($query->num_rows() > 0)
-			{
-				$data = array();
-				foreach ($query->result() as $row)
-				{
-					$data[$row->id] = array($row->kode, $row->ndesc, $row->tipe);
-				}
-			}
-		}
-		else
-		{
-			$strSQL = "SELECT id, kode, ndesc, tipe FROM data_persil_kelas WHERE 1 ORDER BY `data_persil_kelas`.`kode` ASC";
-			$query = $this->db->query($strSQL);
-			if ($query->num_rows() > 0)
-			{
-				$data = array();
-				foreach ($query->result() as $row)
-				{
-					$data[$row->id] = array($row->kode, $row->ndesc, $row->tipe);
-				}
-			}
-		}
+		$data = $this->db->order_by('kode')
+			->get('ref_persil_kelas')
+			->result_array();
 		return $data;
 	}
 
 	public function get_persil_kelas($id=0)
 	{
 		$data = false;
-		$strSQL = "SELECT id, kode, tipe, ndesc FROM data_persil_kelas WHERE id = ".$id;
+		$strSQL = "SELECT id, kode, tipe, ndesc FROM ref_persil_kelas WHERE id = ".$id;
 		$query = $this->db->query($strSQL);
 		if ($query->num_rows() > 0)
 		{
@@ -716,53 +690,6 @@ class Data_persil_model extends CI_Model {
 			$data[$id] = $query->row_array();
 		}
 		return $data;
-	}
-
-	public function update_persil_kelas()
-	{
-		if ($this->input->post('id') == 0)
-		{
-			$strSQL = "INSERT INTO `data_persil_kelas`(`kode`, `tipe`,`ndesc`) VALUES('".fixSQL($this->input->post('nama'))."','".strtoupper(fixSQL($this->input->post('kode')))."','".fixSQL($this->input->post('ndesc'))."')";
-		}
-		else
-		{
-			$strSQL = "UPDATE `data_persil_jenis` SET
-			`nama`='".fixSQL($this->input->post('nama'))."',
-			`kode`= '".strtoupper(fixSQL($this->input->post('kode')))."',
-			`ndesc`='".fixSQL($this->input->post('ndesc'))."'
-			 WHERE id=".$this->input->post('id');
-		}
-
-		$data["db"] = $strSQL;
-		$hasil = $this->db->query($strSQL);
-		if ($hasil)
-		{
-			$data["transaksi"] = true;
-			$data["pesan"] = "Data Kelas Persil ".fixSQL($this->input->post('nama'))." telah disimpan/diperbarui";
-			$_SESSION["success"] = 1;
-			$_SESSION["pesan"] = "Data Kelas Persil ".fixSQL($this->input->post('nama'))." telah disimpan/diperbarui";
-		}
-		else
-		{
-			$data["transaksi"] = false;
-			$data["pesan"] = "ERROR ".$strSQL;
-		}
-		return $data;
-	}
-
-	public function hapus_kelas($id)
-	{
-		$strSQL = "DELETE FROM `data_persil_kelas` WHERE id = ".$id;
-		$hasil = $this->db->query($strSQL);
-		if ($hasil)
-		{
-			$_SESSION["success"] = 1;
-			$_SESSION["pesan"] = "Data Kelas Persil telah dihapus";
-		}
-		else
-		{
-			$_SESSION["success"] = -1;
-		}
 	}
 
 	public function impor_persil()
@@ -803,7 +730,7 @@ class Data_persil_model extends CI_Model {
 			FROM `data_persil` p
 				LEFT JOIN tweb_penduduk u ON u.id = p.id_pend
 				LEFT JOIN tweb_wil_clusterdesa w ON w.id = p.id_clusterdesa
-				LEFT JOIN data_persil_kelas x ON x.id = p.persil_jenis_id
+				LEFT JOIN ref_persil_kelas x ON x.id = p.kelas
 				LEFT JOIN data_persil_c_desa y ON y.id = p.id_c_desa
 
 			 WHERE p.id_c_desa = ".$id." and persil_jenis_id = ".$jenis;

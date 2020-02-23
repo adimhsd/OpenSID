@@ -18,10 +18,10 @@ class Migrasi_2002_ke_2003 extends CI_model {
 
 	  
 		// Buat tabel jenis Kelas Persil
-		if (!$this->db->table_exists('data_persil_kelas') )
+		if (!$this->db->table_exists('ref_persil_kelas') )
 		{
 			$query = "
-			CREATE TABLE IF NOT EXISTS `data_persil_kelas` (
+			CREATE TABLE IF NOT EXISTS `ref_persil_kelas` (
 				  `id` int(10) NOT NULL AUTO_INCREMENT,
 				  `tipe` varchar(12) NOT NULL,
 				  `kode` varchar(12) NOT NULL,
@@ -30,7 +30,7 @@ class Migrasi_2002_ke_2003 extends CI_model {
 			)";
 			$this->db->query($query);
 
-			$query = "INSERT INTO `data_persil_kelas` (`kode`, `tipe`,`ndesc`) VALUES
+			$query = "INSERT INTO `ref_persil_kelas` (`kode`, `tipe`,`ndesc`) VALUES
 				('S-1', 'SAWAH', 'Persawahan Dekat dengan Pemukiman'),
 				('S-2', 'SAWAH', 'Persawahan Agak Jauh dengan Pemukiman'),
 				('S-3', 'SAWAH', 'Persawahan Jauh dengan Pemukiman'),
@@ -65,22 +65,6 @@ class Migrasi_2002_ke_2003 extends CI_model {
 			$this->db->query("ALTER TABLE data_persil ADD `keterangan` text NULL AFTER `pajak`");
 			$this->db->query("ALTER TABLE data_persil ADD `lokasi` TEXT  NULL AFTER `pemilik_luar`");
 		}
-
-		//tambahkan Persil Jenis Sebagai kunci kelas
-		$strSQL = "SELECT nama FROM data_persil_jenis WHERE nama = 'SAWAH'";
-		$query = $this->db->query($strSQL);
-		if ($query->num_rows() <= 0)
-		{
-			$this->db->query("INSERT INTO `data_persil_jenis` (`nama`, `ndesc`) VALUES('SAWAH', 'SAWAH')");
-		}
-
-		$strSQL = "SELECT nama FROM data_persil_jenis WHERE nama = 'KERING'";
-		$query = $this->db->query($strSQL);
-		if ($query->num_rows() <= 0)
-		{
-			$this->db->query("INSERT INTO `data_persil_jenis` (`nama`, `ndesc`) VALUES('KERING', 'TANAH kERING')");
-		}
-
 
 	}
 }

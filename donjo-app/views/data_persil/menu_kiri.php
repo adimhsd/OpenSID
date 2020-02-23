@@ -36,24 +36,6 @@
 </div>
 <div class="box box-info">
 	<div class="box-header with-border">
-		<h3 class="box-title">Jenis Kelas</h3>
-		<div class="box-tools">
-			<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-		</div>
-	</div>
-	<div class="box-body no-padding">
-		<ul class="nav nav-pills nav-stacked">
-			<?php if ($persil_kelas): ?>
-				<?php foreach ($persil_kelas as $key=>$item): ?>
-					<li><a href="<?= site_url("data_persil/persil/kelas/$key/")?>" title="<?=$item['1']?>"><i class='fa fa-list'></i> Kelas <?=$item['0']?></a></li>
-				<?php endforeach;?>
-			<?php endif; ?>
-			<li><a href="<?= site_url('data_persil/persil_kelas')?>"><i class='fa fa-edit'></i> Edit Jenis Kelas</a></li>
-		</ul>
-	</div>
-</div>
-<div class="box box-info">
-	<div class="box-header with-border">
 		<h3 class="box-title">Peruntukan Persil</h3>
 		<div class="box-tools">
 			<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
