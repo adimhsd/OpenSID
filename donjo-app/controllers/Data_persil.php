@@ -367,17 +367,6 @@ class Data_persil extends Admin_Controller {
 		$this->load->view('data_persil/persil_excel', $data);
 	}
 
-	public function kelasid()
-	{
-		$data =[];
-		$id = $this->input->post('id');
-		$kelas = $this->data_persil_model->list_persil_kelas($id);
-		foreach ($kelas as $key => $id) {
-			$data[] = array('id' => $key, 'kode' => $id[0]);
-		}
-		echo json_encode($data);
-	}
-
 }
 
 ?>

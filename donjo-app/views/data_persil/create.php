@@ -188,35 +188,6 @@
 </section>
 </div>
 <script>
-
-	$('document').ready(function()
-	{
-		$('#cid').change(function()
-		{ 
-			var id=$(this).val();
-			$.ajax(
-			{
-				url : "<?=site_url('data_persil/kelasid')?>",
-				method : "POST",
-				data : {id: id},
-				async : true,
-				dataType : 'json',
-				success: function(data)
-				{
-					var html = '';
-					var i;
-					for(i=0; i<data.length; i++)
-					{
-						html += '<option value='+data[i].id+'>'+data[i].kode+'</option>';
-					}
-					$('#kelas').html(html);
-				}
-			});
-			return false;
-		}); 
-
-	});
-
 	function pilih_lokasi(pilih)
 	{
 		if (pilih == 1)
