@@ -77,7 +77,7 @@ class Data_persil extends Admin_Controller {
 		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
 		$data['keyword'] = $this->data_persil_model->autocomplete();
 		$nav['act'] = 7;
-		$data["title"] = $kat." ".$data["persil_$kat"][$mana][0];
+		$data["title"] = $kat." ".$data["persil_$kat"][$mana]['nama'];
 		$this->load->view('nav', $nav);
 		$this->load->view('data_persil/persil', $data);
 		$this->load->view('footer');

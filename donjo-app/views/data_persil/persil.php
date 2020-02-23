@@ -87,7 +87,7 @@
 																		<td><?= $item["nik"] ?></td>
 																		<td><?= sprintf("%04s", $item["c_desa"]) ?></td>
 																		<td><?= sprintf("%04s", $item["nopersil"]) ?></td>
-																		<td><?= $persil_jenis[$item["persil_jenis_id"]][0]?></td>
+																		<td><?= $persil_jenis[$item["persil_jenis_id"]]['nama']?></td>
 																		<td><?= $persil_kelas[$item["kelas"]]['kode']?></td>
 																		<td><?= $item["luas"] ?></td>
 																		<td><?= ($item["lokasi"])?: "RT: ".$item["rt"]." RW: ".$item["rw"]." Dusun ".strtoupper($item["dusun"]) ?></td>

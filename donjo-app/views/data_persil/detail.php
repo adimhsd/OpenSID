@@ -117,7 +117,7 @@
 
 																				<a href="#" data-href="<?= site_url("data_persil/hapus_persil/".$item["id"])?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
 																			</td><td><?= $item["nopersil"] ?></td>
-																			<td><?= $persil_jenis[$item["persil_jenis_id"]][0]?></td>
+																			<td><?= $persil_jenis[$item["persil_jenis_id"]]['nama']?></td>
 																			<td><?= $persil_kelas[$item["kelas"]]['kode']?></td>
 																			<td><?= $item["luas"] ?></td>
 																			<td><?= $item["pajak"] ?></td>

@@ -117,9 +117,9 @@ class Data_persil_model extends CI_Model {
 	public function list_c_desa($kat='', $mana=0, $offset, $per_page)
 	{
 		
-		$strSQL = "SELECT y.`id` AS id, y.`c_desa`, p.`id_c_desa`, u.nik AS nik, p.`id_pend`, p.`id_clusterdesa`,  p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,COUNT(p.id_c_desa) AS jumlah, ".
-			$this->persil_jenis_id()."
-			p.`lokasi`, w.rt, w.rw, w.dusun, p.rdate as tanggal_daftar
+		$strSQL = "SELECT y.`id` AS id, y.`c_desa`, p.`id_c_desa`, u.nik AS nik, p.`id_pend`, p.`id_clusterdesa`,  p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,COUNT(p.id_c_desa) AS jumlah, "
+			// .$this->persil_jenis_id()
+			."p.`lokasi`, w.rt, w.rw, w.dusun, p.rdate as tanggal_daftar
 
 		FROM data_persil_c_desa y
 		LEFT JOIN data_persil p ON p.id_c_desa = y.id
@@ -596,18 +596,11 @@ class Data_persil_model extends CI_Model {
 
 	public function list_persil_jenis()
 	{
-		$data = false;
-		$strSQL = "SELECT id,nama,ndesc FROM data_persil_jenis WHERE 1";
-		$query = $this->db->query($strSQL);
-		if ($query->num_rows() > 0)
-		{
-			$data = array();
-			foreach ($query->result() as $row)
-			{
-				$data[$row->id] = array($row->nama, $row->ndesc);
-			}
-		}
-		return $data;
+		$data = $this->db->order_by('nama')
+			->get('data_persil_jenis')
+			->result_array();
+		$result = array_combine(array_column($data, 'id'), $data);
+		return $result;
 	}
 
 	public function get_persil_jenis($id=0)

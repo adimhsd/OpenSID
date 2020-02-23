@@ -82,8 +82,8 @@
 											<div class="col-sm-4">
 												<select class="form-control input-sm required" id="cid" name="cid" >
 													<option value>-- Pilih Jenis Persil--</option>
-													<?php foreach ($persil_jenis as $key=>$item): ?>
-														<option value="<?= $key ?>" <?php if ($key==$persil_detail["persil_jenis_id"]): ?>selected<?php endif; ?>><?= $item[0]?></option>
+													<?php foreach ($persil_jenis as $key => $item): ?>
+														<option value="<?= $item['id'] ?>" <?php selected($key, $persil_detail["persil_jenis_id"]) ?>><?= $item['nama']?></option>
 													<?php endforeach;?>
 												</select>
 											</div>

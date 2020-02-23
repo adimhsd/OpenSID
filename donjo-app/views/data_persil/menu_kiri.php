@@ -26,11 +26,11 @@
 	<div class="box-body no-padding">
 		<ul class="nav nav-pills nav-stacked">
 			<?php if ($persil_jenis): ?>
-				<?php foreach ($persil_jenis as $key=>$item): ?>
-					<li><a href="<?= site_url("data_persil/persil/jenis/$key/")?>" title="<?=$item[1]?>"><i class='fa fa-list'></i> <?=$item[0]?></a></li>
+				<?php foreach ($persil_jenis as $key => $item): ?>
+					<li><a href="<?= site_url("data_persil/persil/jenis/$key/")?>" title="<?=$item['nama']?>"><i class='fa fa-list'></i> <?=$item['nama']?></a></li>
 				<?php endforeach;?>
 			<?php endif; ?>
-			<li><a href="<?= site_url('data_persil/persil_jenis')?>"><i class='fa fa-edit'></i> Edit Jenis Persil</a></li>
+			<li><a href="<?= site_url('data_persil/persil_jenis')?>"><i class='fa fa-plus'></i> Tambah Jenis Persil</a></li>
 		</ul>
 	</div>
 </div>

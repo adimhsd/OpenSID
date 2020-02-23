@@ -24,7 +24,6 @@
 			</div>
 			<div class="col-md-9">
 				<div class="box box-info">
-					<?php if ($id != 0): ?>
 					<form id="validasi" action="<?= $form_action?>" method="POST" class="form-horizontal">
 						<div class="box-body">
 							<div class="form-group">
@@ -48,7 +47,6 @@
 							</div>
 						</div>
 					</form>
-				<?php endif; ?>
 					<div class="box-body">
 						<?php if ($persil_jenis): ?>
 								<?php if (count($persil_jenis)>0): ?>
@@ -63,7 +61,7 @@
 													<th>Ketarangan</th>
 												</thead>
 												<tbody>
-													<?php $nomer =0; foreach ($persil_jenis as $key=>$item): $nomer++;?>
+													<?php $nomer =0; foreach ($persil_jenis as $key => $item): $nomer++;?>
 														<tr>
 															<td><?=$nomer?></td>
 															<td nowrap>
@@ -71,8 +69,8 @@
 																<a href="<?= site_url("data_persil/persil_jenis/".$key)?>" class="btn bg-orange btn-flat btn-sm"  title="Ubah"><i class="fa fa-edit"></i></a>
 																<a href="#" data-href="<?= site_url("data_persil/hapus_persil_jenis/".$key)?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
 															</td>
-															<td width="30%"><a href="<?php site_url('data_persil/index/jenis/'.$key.'/')?>"><?=$item[0]?></a></td>
-															<td width="50%"><?= $item[1] ?></td>
+															<td width="30%"><a href="<?php site_url('data_persil/index/jenis/'.$key.'/')?>"><?=$item['nama']?></a></td>
+															<td width="50%"><?= $item['ndesc'] ?></td>
 														</tr>
 													<?php endforeach; ?>
 												</tbody>
