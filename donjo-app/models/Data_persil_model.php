@@ -117,14 +117,16 @@ class Data_persil_model extends CI_Model {
 	public function list_c_desa($kat='', $mana=0, $offset, $per_page)
 	{
 		
-		$strSQL = "SELECT y.`id` AS id, y.`c_desa`, p.`id_c_desa`, u.nik AS nik, p.`id_pend`, p.`id_clusterdesa`,  p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,COUNT(p.id_c_desa) AS jumlah, "
-			// .$this->persil_jenis_id()
-			."p.`lokasi`, w.rt, w.rw, w.dusun, p.rdate as tanggal_daftar
+		$strSQL = "SELECT y.`id` AS id, y.`c_desa`, p.`id_c_desa`, x.`kode`, u.nik AS nik, p.`id_pend`, p.`id_clusterdesa`,  p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,COUNT(p.id_c_desa) AS jumlah,
+			p.`lokasi`, w.rt, w.rw, w.dusun, p.rdate as tanggal_daftar,
+			SUM(IF(x.`kode`LIke '%S%', p.`luas`,0)) as basah,
+			SUM(IF(x.`kode`LIke '%D%', p.`luas`,0)) as kering 
 
 		FROM data_persil_c_desa y
 		LEFT JOIN data_persil p ON p.id_c_desa = y.id
 		LEFT JOIN tweb_penduduk u ON u.id = y.id_pend
 		LEFT JOIN tweb_wil_clusterdesa w ON w.id = u.id_cluster
+		LEFT JOIN ref_persil_kelas x ON x.id = p.kelas
 		GROUP by c_desa";
 		$strSQL .= " LIMIT ".$offset.",".$per_page;
 		$query = $this->db->query($strSQL);
@@ -150,20 +152,6 @@ class Data_persil_model extends CI_Model {
 		}
 		return $data;
 	}
-
-	private function persil_jenis_id()
-	{
-		$persil_jenis_id = $this->list_persil_jenis();
-		foreach ($persil_jenis_id as $key => $value) 
-		{
-
-			$sql .=" SUM(IF(p.`persil_jenis_id` =  $key, p.`luas`,0)) as $value[0], ";
-		}
-
-		return $sql;
-	}
-
-
 
 	public function get_persil($id)
 	{

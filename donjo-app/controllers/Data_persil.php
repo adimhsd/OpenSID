@@ -337,7 +337,6 @@ class Data_persil extends Admin_Controller {
 	public function cetak($o=0)
 	{
 		$data['data_persil'] = $this->data_persil_model->list_c_desa('', $o, 0, 10000);
-		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
 		$this->load->view('data_persil/c_desa_print', $data);
 	}
 
