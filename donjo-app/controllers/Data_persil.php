@@ -47,6 +47,7 @@ class Data_persil extends Admin_Controller {
 		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
 		$data['keyword'] = $this->data_persil_model->autocomplete();
 		$nav['act'] = 7;
+		$this->tab_ini = 12;
 		$this->load->view('nav', $nav);
 		$this->load->view('data_persil/c_desa', $data);
 		$this->load->view('footer');
@@ -58,7 +59,7 @@ class Data_persil extends Admin_Controller {
 		$data['kat'] = $kat;
 		$data['mana'] = $mana;
 		$header['minsidebar'] = 1;
-
+		$this->_set_tab($kat, $mana);
 		$this->load->view('header', $header);
 
 		if (isset($_SESSION['cari']))
@@ -81,6 +82,24 @@ class Data_persil extends Admin_Controller {
 		$this->load->view('nav', $nav);
 		$this->load->view('data_persil/persil', $data);
 		$this->load->view('footer');
+	}
+
+	private function _set_tab($kat='', $mana='')
+	{
+		switch (true)
+		{
+			case ($kat === "peruntukan"):
+				$this->tab_ini = 3..$mana;
+				break;
+
+			case ($kat === "jenis"):
+				$this->tab_ini = 2..$mana;
+				break;
+
+			default:
+				$this->tab_ini = 13;
+				break;
+		}
 	}
 
 	public function import()
@@ -140,6 +159,7 @@ class Data_persil extends Admin_Controller {
 
 		$header = $this->header_model->get_data();
 		$header['minsidebar'] = 1;
+		$this->tab_ini = 10;
 		$this->load->view('header', $header);
 
 		$data["mode"] = $mode;
@@ -183,6 +203,7 @@ class Data_persil extends Admin_Controller {
 
 		$header = $this->header_model->get_data();
 		$header['minsidebar'] = 1;
+		$this->tab_ini = 11;
 		$this->load->view('header', $header);
 
 		$data["mode"] = $mode;
@@ -228,6 +249,7 @@ class Data_persil extends Admin_Controller {
 		$header['minsidebar'] = 1;
 		$this->load->view('header', $header);
 		$nav['act'] = 7;
+		$this->tab_ini = 20;
 		$this->load->view('nav', $nav);
 		$data["id"] = $id;
 		if ($this->form_validation->run() === FALSE)
@@ -264,6 +286,7 @@ class Data_persil extends Admin_Controller {
 		$this->form_validation->set_rules('nama', 'Nama Jenis Persil', 'required');
 		$header = $this->header_model->get_data();
 		$header['minsidebar'] = 1;
+		$this->tab_ini = 30;
 		$this->load->view('header', $header);
 		$nav['act'] = 7;
 		$this->load->view('nav', $nav);
@@ -294,6 +317,7 @@ class Data_persil extends Admin_Controller {
 
 		$header = $this->header_model->get_data();
 		$header['minsidebar'] = 1;
+		$this->tab_ini = 15;
 		$this->load->view('header', $header);
 		$nav['act'] = 7;
 		$this->load->view('nav', $nav);
