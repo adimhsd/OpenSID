@@ -734,4 +734,15 @@ function alfanumerik_spasi($str)
 	return preg_replace('/[^a-zA-Z0-9\s]/', '', strip_tags($str));
 }
 
+
+function encode_url_nama($str)
+{
+	return str_replace('+', '_', urlencode($str));
+}
+
+function decode_url_nama($str)
+{
+	return urldecode(str_replace('_', '+', $str));
+}
+
 ?>

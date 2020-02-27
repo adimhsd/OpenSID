@@ -150,8 +150,60 @@ class Data_persil_model extends CI_Model {
 			}
 			$j++;
 		}
+		$persil = $this->list_c_desa_persil($kat, $mana, $offset, $per_page);
+		if($persil && $data)
+		{
+			$data = array_merge($data, $persil);
+		}
+		elseif($persil)
+		{
+			$data = $persil;
+		}
+		else
+		{
+			$data = $data;
+		}
+
 		return $data;
 	}
+
+	private function list_c_desa_persil($kat='', $mana=0, $offset, $per_page)
+	{
+		
+		$strSQL = "SELECT p.`id` AS id_persil, p.`id_c_desa` as c_desa, u.nik AS nik, p.`id_pend`, p.`id_clusterdesa`, p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,COUNT(p.id_c_desa) AS jumlah, p.`lokasi`, w.rt, w.rw, w.dusun, p.rdate as tanggal_daftar, SUM(IF(x.`kode`LIke '%S%', p.`luas`,0)) as basah, SUM(IF(x.`kode`LIke '%D%', p.`luas`,0)) as kering 
+		FROM data_persil p 
+		LEFT JOIN tweb_penduduk u ON u.id = p.id_pend 
+		LEFT JOIN tweb_wil_clusterdesa w ON w.id = u.id_cluster 
+		LEFT JOIN ref_persil_kelas x ON x.id = p.kelas 
+		WHERE p.`id_c_desa` = 0
+		GROUP by p.id_pend";
+		$strSQL .= " LIMIT ".$offset.",".$per_page;
+		$query = $this->db->query($strSQL);
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->result_array();
+		}
+		else
+		{
+			$_SESSION["pesan"]= $strSQL;
+		}
+
+		$j = $offset;
+		for ($i=0; $i<count($data); $i++)
+		{
+			$data[$i]['no'] = $j + 1;
+			if (($data[$i]['jenis_pemilik']) == 2)
+			{
+				$data[$i]['namapemilik'] = $data[$i]['pemilik_luar'];
+				$data[$i]['nik'] = "-";
+			}
+			$j++;
+		}
+		return $data;
+	}
+
+
+	 
 
 	public function get_persil($id)
 	{
@@ -412,30 +464,44 @@ class Data_persil_model extends CI_Model {
 		return $hasil;
 	}
 
-	public function hapus_c_desa($id)
+	public function hapus_c_desa($id, $mana)
 	{
-		$strSQL = "SELECT id_c_desa FROM data_persil WHERE 1";
-		$query = $this->db->query($strSQL);
-		if ($query->num_rows() > 0)
+		if($mana ==='id')
 		{
-			$strSQL = "DELETE  a, b FROM data_persil_c_desa a , data_persil b WHERE a.id = ".$id." AND b.id_c_desa = ".$id;
+			$strSQL = "DELETE FROM  data_persil WHERE id_pend = ".$id;
 			$hasil = $this->db->query($strSQL);
 		}
-		else
+			
+		elseif($mana ==='nama')
 		{
-			$strSQL = "DELETE FROM data_persil_c_desa WHERE id = ".$id;
+			echo $strSQL = "DELETE FROM  data_persil WHERE pemilik_luar = '".decode_url_nama($id)."'";
 			$hasil = $this->db->query($strSQL);
-		}
-		if ($hasil)
-		{
-			$_SESSION["success"] = 1;
-			$_SESSION["pesan"] = "Data Persil telah dihapus";
-		}
+		}	
 		else
 		{
-			$_SESSION["success"] = -1;
-			$_SESSION["pesan"] = "Gagal menghapus data persil";
-		}
+			$strSQL = "SELECT * FROM data_persil WHERE id_c_desa = ".$id;
+			$query = $this->db->query($strSQL);
+			if ($query->num_rows() > 0)
+			{
+				$strSQL = "DELETE  a, b FROM data_persil_c_desa a , data_persil b WHERE a.id = ".$id." AND b.id_c_desa = ".$id;
+				$hasil = $this->db->query($strSQL);
+			}
+			else
+			{
+				$strSQL = "DELETE FROM data_persil_c_desa WHERE id = ".$id;
+				$hasil = $this->db->query($strSQL);
+			}
+			if ($hasil)
+			{
+				$_SESSION["success"] = 1;
+				$_SESSION["pesan"] = "Data Persil telah dihapus";
+			}
+			else
+			{
+				$_SESSION["success"] = -1;
+				$_SESSION["pesan"] = "Gagal menghapus data persil";
+			}
+		}	
 	}
 
 	public function hapus_persil($id)

@@ -116,7 +116,7 @@ class Data_persil extends Admin_Controller {
 		redirect('data_persil');
 	}
 
-	public function detail($id=0)
+	public function detail($mode='', $id=0)
 	{
 		$header = $this->header_model->get_data();
 		$header['minsidebar'] = 1;
@@ -131,6 +131,29 @@ class Data_persil extends Admin_Controller {
 		$nav['act'] = 7;
 		$this->load->view('nav',$nav);
 		$this->load->view('data_persil/detail', $data);
+		$this->load->view('footer');
+	}
+
+	public function detail_edit($mode='', $id=0)
+	{
+		$header = $this->header_model->get_data();
+		$header['minsidebar'] = 1;
+		$this->load->view('header', $header);
+		
+		$data["penduduk"] = $this->data_persil_model->list_penduduk();
+		$data["c_desa_detail"] = $this->data_persil_model->get_c_desa($id);
+		$data["persil_detail"] = $this->data_persil_model->list_detail_c_desa($id);
+		$data["persil_lokasi"] = $this->data_persil_model->list_dusunrwrt();
+		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
+		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
+		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
+		$nav['act'] = 7;
+		if (isset($_POST['nik']))
+		{
+			$data['pemilik'] = $this->data_persil_model->get_penduduk($_POST['nik'], $nik=true);
+		}
+		$this->load->view('nav',$nav);
+		$this->load->view('data_persil/detail_edit', $data);
 		$this->load->view('footer');
 	}
 
@@ -332,10 +355,10 @@ class Data_persil extends Admin_Controller {
 		redirect("data_persil/persil_peruntukan");
 	}
 
-	public function hapus($id)
+	public function hapus($mana, $id)
 	{
 		$this->redirect_hak_akses('h', "data_persil");
-		$this->data_persil_model->hapus_c_desa($id);
+		$this->data_persil_model->hapus_c_desa($id, $mana);
 		redirect("data_persil");
 	}
 
