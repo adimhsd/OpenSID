@@ -43,9 +43,9 @@
 											<div class="box-body">
 												<?php if ($c_desa_detail['jenis_pemilik'] != '2'): ?>
 													<?php if($c_desa_detail["c_desa"]): ?>
-														<input  id="id_c_desa" name="id_c_desa" type="text" value="<?= strtoupper($c_desa_detail["id"])?>" >
+														<input  id="id_c_desa" name="id_c_desa" type="hidden" value="<?= strtoupper($c_desa_detail["id"])?>" >
 													<?php else : ?>
-														<input  id="id_pend" name="id_pend" type="text" value="<?= strtoupper($c_desa_detail["id_pend"])?>" >
+														<input  id="id_pend" name="id_pend" type="hidden" value="<?= strtoupper($c_desa_detail["id_pend"])?>" >
 													<?php endif ?>
 													<div class="form-group">
 														<label class="col-sm-3 control-label">Nama Penduduk</label>
@@ -69,9 +69,9 @@
 
 												<?php else : ?>
 													<?php if($c_desa_detail["c_desa"]): ?>
-														<input  id="id_c_desa" name="id_c_desa" type="text" value="<?= strtoupper($c_desa_detail["id"])?>" >
+														<input  id="id_c_desa" name="id_c_desa" type="hidden" value="<?= strtoupper($c_desa_detail["id"])?>" >
 													<?php else : ?>
-														<input  type="text" id="id_persil" name="id_persil"  value="<?= strtoupper($c_desa_detail["id"])?>" >
+														<input  type="hidden" id="id_persil" name="id_persil"  value="<?= strtoupper($c_desa_detail["id"])?>" >
 													<?php endif ?>
 													<div class="form-group">
 

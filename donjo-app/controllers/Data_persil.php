@@ -122,8 +122,14 @@ class Data_persil extends Admin_Controller {
 		$header['minsidebar'] = 1;
 		$this->load->view('header', $header);
 
-		$data["c_desa_detail"] = $this->data_persil_model->get_c_desa($id);
-		$data["persil_detail"] = $this->data_persil_model->list_detail_c_desa($id);
+		if ($mode === 'persil')
+			$data["c_desa_detail"] = $this->data_persil_model->get_c_desa_persil($id);
+		elseif ($mode === 'id_pend')
+			$data["c_desa_detail"] = $this->data_persil_model->get_c_desa_id_pend($id);
+		else
+			$data["c_desa_detail"] = $this->data_persil_model->get_c_desa($id);
+
+		$data["persil_detail"] = $this->data_persil_model->list_detail_c_desa($mode, $id);
 		$data["persil_lokasi"] = $this->data_persil_model->list_dusunrwrt();
 		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
 		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
@@ -140,7 +146,6 @@ class Data_persil extends Admin_Controller {
 		$header['minsidebar'] = 1;
 		$this->load->view('header', $header);
 		
-		$data["penduduk"] = $this->data_persil_model->list_penduduk();
 		if ($mode === 'persil')
 			$data["c_desa_detail"] = $this->data_persil_model->get_c_desa_persil($id);
 		elseif ($mode === 'id_pend')
