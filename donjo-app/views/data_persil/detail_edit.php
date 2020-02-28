@@ -42,8 +42,11 @@
 										<form name='mainform' action="" method="POST"  id="validasi" class="form-horizontal">
 											<div class="box-body">
 												<?php if ($c_desa_detail['jenis_pemilik'] != '2'): ?>
-													<input  type="text" placeholder="Nama Pemilik" value="<?= strtoupper($c_desa_detail["id_pend"])?>" >
-
+													<?php if($c_desa_detail["c_desa"]): ?>
+														<input  id="id_c_desa" name="id_c_desa" type="text" value="<?= strtoupper($c_desa_detail["id"])?>" >
+													<?php else : ?>
+														<input  id="id_pend" name="id_pend" type="text" value="<?= strtoupper($c_desa_detail["id_pend"])?>" >
+													<?php endif ?>
 													<div class="form-group">
 														<label class="col-sm-3 control-label">Nama Penduduk</label>
 														<div class="col-sm-8">
@@ -65,7 +68,13 @@
 													</div>
 
 												<?php else : ?>
+													<?php if($c_desa_detail["c_desa"]): ?>
+														<input  id="id_c_desa" name="id_c_desa" type="text" value="<?= strtoupper($c_desa_detail["id"])?>" >
+													<?php else : ?>
+														<input  type="text" id="id_persil" name="id_persil"  value="<?= strtoupper($c_desa_detail["id"])?>" >
+													<?php endif ?>
 													<div class="form-group">
+
 														<label class="col-sm-3 control-label">Nama Pemilik</label>
 														<div class="col-sm-8">
 															<input  class="form-control input-sm" type="text" placeholder="Nama Pemilik" value="<?= strtoupper($c_desa_detail["namapemilik"])?>" disabled >
@@ -82,42 +91,49 @@
 
 												<?php endif; ?>
 												<div class="form-group">
-														<label for="alamat"  class="col-sm-3 control-label">C-DESA</label>
+														<label for="c_desa"  class="col-sm-3 control-label">C-DESA</label>
 														<div class="col-sm-8">
-															<input  class="form-control input-sm" type="text" placeholder="Nama Pemilik" value="<?= sprintf("%04s", $c_desa_detail["c_desa"])?>" >
+															<input  id="c_desa" name="c_desa" class="form-control input-sm" type="text" placeholder="Nomor C-DESA" value="<?= sprintf("%04s", $c_desa_detail["c_desa"])?>" >
 										
 														</div>
 												</div>
-
-
-												<div class="table-responsive">
-													<table class="table table-bordered table-striped dataTable table-hover">
-														<thead class="bg-gray disabled color-palette">
+											</div>
+											<div class="box-footer">
+												<div class="col-xs-12">
+													<button type="reset" class="btn btn-social btn-flat btn-danger btn-sm"><i class="fa fa-times"></i> Batal</button>
+													<button type="submit" onclick="$('#'+'validasi').attr('action','<?= site_url('data_persil/simpan_c_desa')?>');$('#'+'validasi').submit();" class="btn btn-social btn-flat btn-info btn-sm pull-right"><i class="fa fa-check"></i> Simpan</button>
+												</div>
+											</div>
+										</form>
+										<div class="box-body">
+											<div class="table-responsive">
+												<table class="table table-bordered table-striped dataTable table-hover">
+													<thead class="bg-gray disabled color-palette">
+														<tr>
+															<th>No</th>
+															<th>Aksi</th>
+															<th>Nomor Persil</th>
+															<th>Tipe Persil</th>
+															<th>Kelas Desa</th>
+															<th>Luas Tanah</th>
+															<th>Pajak</th>
+															<th>Keterangan</th>
+															<th>Peruntukan</th>
+															<th>No. SPPT</th>
+															<th>Lokasi</th>
+														</tr>
+													</thead>
+													<tbody>
+														<?php foreach ($persil_detail as $item): ?>
 															<tr>
-																<th>No</th>
-																<th>Aksi</th>
-																<th>Nomor Persil</th>
-																<th>Tipe Persil</th>
-																<th>Kelas Desa</th>
-																<th>Luas Tanah</th>
-																<th>Pajak</th>
-																<th>Keterangan</th>
-																<th>Peruntukan</th>
-																<th>No. SPPT</th>
-																<th>Lokasi</th>
-															</tr>
-														</thead>
-														<tbody>
-															<?php foreach ($persil_detail as $item): ?>
-																<tr>
-																	<td><?= $no++ ?></td>
-																	<td nowrap><a href="<?= site_url("data_persil/detail_persil/".$item["id"])?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
+																<td><?= $no++ ?></td>
+																<td nowrap><a href="<?= site_url("data_persil/detail_persil/".$item["id"])?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
 																	<?php if ($item['jenis_pemilik'] == '2'): ?>
 																		<a href="<?= site_url("data_persil/create_ext/edit/".$item["id"])?>" class="btn bg-orange btn-flat btn-sm"  title="Ubah Data"><i class="fa fa-edit"></i></a>
-																	<?php else: ?>
-																		<a href="<?= site_url("data_persil/create/edit/".$item["id"])?>" class="btn bg-orange btn-flat btn-sm"  title="Ubah Data"><i class="fa fa-edit"></i></a>
-																	<?php endif; ?>
-																	<a href="#" data-href="<?= site_url("data_persil/hapus_persil/".$item["id"])?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
+																		<?php else: ?>
+																			<a href="<?= site_url("data_persil/create/edit/".$item["id"])?>" class="btn bg-orange btn-flat btn-sm"  title="Ubah Data"><i class="fa fa-edit"></i></a>
+																		<?php endif; ?>
+																		<a href="#" data-href="<?= site_url("data_persil/hapus_persil/".$item["id"])?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
 																	</td><td><?= $item["nopersil"] ?></td>
 																	<td><?= $persil_jenis[$item["persil_jenis_id"]]['nama']?></td>
 																	<td><?= $persil_kelas[$item["kelas"]]['kode']?></td>
@@ -132,26 +148,27 @@
 														</tbody>
 													</table>
 												</div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class='modal fade' id='confirm-delete' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
-							<div class='modal-dialog'>
-								<div class='modal-content'>
-									<div class='modal-header'>
-										<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-										<h4 class='modal-title' id='myModalLabel'><i class='fa fa-exclamation-triangle text-red'></i> Konfirmasi</h4>
-									</div>
-									<div class='modal-body btn-info'>
-										Apakah Anda yakin ingin menghapus data ini?
-									</div>
-									<div class='modal-footer'>
-										<button type="button" class="btn btn-social btn-flat btn-warning btn-sm" data-dismiss="modal"><i class='fa fa-sign-out'></i> Tutup</button>
-										<a class='btn-ok'>
-											<button type="button" class="btn btn-social btn-flat btn-danger btn-sm" id="ok-delete"><i class='fa fa-trash-o'></i> Hapus</button>
-										</a>
+							<div class='modal fade' id='confirm-delete' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+								<div class='modal-dialog'>
+									<div class='modal-content'>
+										<div class='modal-header'>
+											<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+											<h4 class='modal-title' id='myModalLabel'><i class='fa fa-exclamation-triangle text-red'></i> Konfirmasi</h4>
+										</div>
+										<div class='modal-body btn-info'>
+											Apakah Anda yakin ingin menghapus data ini?
+										</div>
+										<div class='modal-footer'>
+											<button type="button" class="btn btn-social btn-flat btn-warning btn-sm" data-dismiss="modal"><i class='fa fa-sign-out'></i> Tutup</button>
+											<a class='btn-ok'>
+												<button type="button" class="btn btn-social btn-flat btn-danger btn-sm" id="ok-delete"><i class='fa fa-trash-o'></i> Hapus</button>
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>

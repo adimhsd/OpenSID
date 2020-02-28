@@ -72,15 +72,15 @@
 																		<td nowrap>
 																			<?php if ($item['id_persil']): ?>
 																				<?php if  ($item['jenis_pemilik'] == '2'): ?>
-																					<a href="<?= site_url("data_persil/detail/nama/".encode_url_nama($item["namapemilik"]))?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
+																					<a href="<?= site_url("data_persil/detail/persil/".$item["id_persil"])?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
 																					<a href="" class="btn bg-green btn-flat btn-sm disabled"  title="Tambah Data"><i class="fa fa-plus"></i></a>
-																					<a href="<?= site_url("data_persil/detail_edit/nama/".encode_url_nama($item["namapemilik"]))?>" class="btn bg-yellow btn-flat btn-sm"  title="Rincian"><i class="fa fa-edit"></i></a>
-																					<a href="#" data-href="<?= site_url("data_persil/hapus/nama/".encode_url_nama($item["namapemilik"]))?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
+																					<a href="<?= site_url("data_persil/detail_edit/persil/".$item["id_persil"])?>" class="btn bg-yellow btn-flat btn-sm"  title="Rincian"><i class="fa fa-edit"></i></a>
+																					<a href="#" data-href="<?= site_url("data_persil/hapus_persil/".$item["id_persil"])?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
 																				<?php else: ?>
-																					<a href="<?= site_url("data_persil/detail/id/".$item["id_pend"])?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
+																					<a href="<?= site_url("data_persil/detail/id_pend/".$item["id_pend"])?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
 																					<a href="" class="btn bg-green btn-flat btn-sm disabled"  title="Tambah Data"><i class="fa fa-plus"></i></a>
-																					<a href="<?= site_url("data_persil/detail_edit/id/".$item["id_pend"])?>" class="btn bg-yellow btn-flat btn-sm"  title="Rincian"><i class="fa fa-edit"></i></a>
-																					<a href="#" data-href="<?= site_url("data_persil/hapus/id/".$item["id_pend"])?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
+																					<a href="<?= site_url("data_persil/detail_edit/id_pend/".$item["id_pend"])?>" class="btn bg-yellow btn-flat btn-sm"  title="Rincian"><i class="fa fa-edit"></i></a>
+																					<a href="#" data-href="<?= site_url("data_persil/hapus/id_pend/".$item["id_pend"])?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
 																				<?php endif ?>
 																			<?php else: ?>
 																				<a href="<?= site_url("data_persil/detail/c_desa/".$item["id"])?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
@@ -89,7 +89,7 @@
 																					<?php else: ?>
 																						<a href="<?= site_url("data_persil/create/add/".$item["id"])?>" class="btn bg-green btn-flat btn-sm"  title="Tambah Data"><i class="fa fa-plus"></i></a>
 																					<?php endif; ?>
-																				<a href="<?= site_url("data_persil/detail_edit/c_desa/".$item["id_pend"])?>" class="btn bg-yellow btn-flat btn-sm"  title="Rincian"><i class="fa fa-edit"></i></a>
+																				<a href="<?= site_url("data_persil/detail_edit/c_desa/".$item["id"])?>" class="btn bg-yellow btn-flat btn-sm"  title="Rincian"><i class="fa fa-edit"></i></a>
 																				<a href="#" data-href="<?= site_url("data_persil/hapus/c_desa/".$item["id"])?>" class="btn bg-maroon btn-flat btn-sm"  title="Hapus" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>
 																			<?php endif ?>
 																		</td>
