@@ -223,7 +223,6 @@ class Data_persil extends Admin_Controller {
 		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
 		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
 		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
-		print_r($data["persil_detail"]);
 		$nav['act'] = 7;
 		$this->load->view('nav', $nav);
 		$this->load->view('data_persil/create', $data);
