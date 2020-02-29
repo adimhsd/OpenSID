@@ -855,6 +855,7 @@ class Data_persil_model extends CI_Model {
 			$data = $this->db->order_by('kode')
 			->get('ref_persil_kelas')
 			->result_array();
+			$data = array_combine(array_column($data, 'id'), $data);
 		}
 		
 		return $data;
