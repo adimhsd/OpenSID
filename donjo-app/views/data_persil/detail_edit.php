@@ -93,7 +93,7 @@
 												<div class="form-group">
 														<label for="c_desa"  class="col-sm-3 control-label">C-DESA</label>
 														<div class="col-sm-8">
-															<input  id="c_desa" name="c_desa" class="form-control input-sm" type="text" placeholder="Nomor C-DESA" value="<?= sprintf("%04s", $c_desa_detail["c_desa"])?>" >
+															<input  id="c_desa" name="c_desa" class="form-control input-sm angka" type="text" placeholder="Nomor C-DESA" value="<?= sprintf("%04s", $c_desa_detail["c_desa"])?>" >
 										
 														</div>
 												</div>

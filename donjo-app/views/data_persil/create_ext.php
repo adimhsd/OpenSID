@@ -40,13 +40,13 @@
 										<div class="form-group">
 											<label for="c_desa"  class="col-sm-3 control-label">Nomor C-DESA</label>
 											<div class="col-sm-8">
-												<input  id="c_desa" class="form-control input-sm required" type="text" placeholder="Nomor Surat C-DESA" name="c_desa" value="<?= $persil_detail["c_desa"] ?>">
+												<input  id="c_desa" class="form-control input-sm angka required" type="text" placeholder="Nomor Surat C-DESA" name="c_desa" value="<?= $persil_detail["c_desa"] ?>">
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="nama"  class="col-sm-3 control-label">Nomor Persil</label>
 											<div class="col-sm-8">
-												<input  id="nama" class="form-control input-sm required" type="text" placeholder="Nomor Surat Persil" name="nama" value="<?= $persil_detail["nopersil"] ?>">
+												<input  id="nama" class="form-control input-sm angka required" type="text" placeholder="Nomor Surat Persil" name="nama" value="<?= $persil_detail["nopersil"] ?>">
 											</div>
 										</div>
 										<div class="form-group">
@@ -75,7 +75,7 @@
 										<div class="form-group">
 											<label for="luas_tanah"  class="col-sm-3 control-label">Luas Tanah (M<sup>2</sup>)</label>
 											<div class="col-sm-4">
-												<input  id="luas" name="luas"  type="text"  class="form-control input-sm required" placeholder="Luas" value="<?= $persil_detail["luas"] ?>">
+												<input  id="luas" name="luas"  type="text"  class="form-control input-sm luas required" placeholder="Luas" value="<?= $persil_detail["luas"] ?>">
 											</div>
 										</div>
 										<div class="form-group">
@@ -87,7 +87,7 @@
 										<div class="form-group">
 											<label for="nama"  class="col-sm-3 control-label">Pajak</label>
 											<div class="col-sm-8">
-												<input  id="pajak" class="form-control input-sm" type="text" placeholder="Pajak" name="pajak" value="<?= $persil_detail["pajak"] ?>">
+												<input  id="pajak" class="form-control input-sm angka" type="text" placeholder="Pajak" name="pajak" value="<?= $persil_detail["pajak"] ?>">
 											</div>
 										</div>
 										<div class="form-group">
@@ -147,7 +147,7 @@
 									<div class="box-footer">
 										<div class="col-xs-12">
 											<button type="reset" class="btn btn-social btn-flat btn-danger btn-sm"><i class="fa fa-times"></i> Batal</button>
-											<button type="submit" onclick="$('#'+'validasi').attr('action','<?= site_url('data_persil/simpan_persil')?>');$('#'+'validasi').submit();" class="btn btn-social btn-flat btn-info btn-sm pull-right"><i class="fa fa-check"></i> Simpan</button>
+											<button type="submit" class="btn btn-social btn-flat btn-info btn-sm pull-right"><i class="fa fa-check"></i> Simpan</button>
 										</div>
 									</div>
 								</form>
