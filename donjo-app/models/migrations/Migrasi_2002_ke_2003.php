@@ -31,14 +31,14 @@ class Migrasi_2002_ke_2003 extends CI_model {
 			$this->db->query($query);
 
 			$query = "INSERT INTO `ref_persil_kelas` (`kode`, `tipe`,`ndesc`) VALUES
-				('S-1', 'SAWAH', 'Persawahan Dekat dengan Pemukiman'),
-				('S-2', 'SAWAH', 'Persawahan Agak Jauh dengan Pemukiman'),
-				('S-3', 'SAWAH', 'Persawahan Jauh dengan Pemukiman'),
-				('S-4', 'SAWAH', 'Persawahan Sangat Jauh dengan Pemukiman'),
-				('D-1', 'KERING', 'Lahan Kering Dekat dengan Pemukiman'),
-				('D-2', 'KERING', 'Lahan Kering Agak Jauh dengan Pemukiman'),
-				('D-3', 'KERING', 'Lahan Kering Jauh dengan Pemukiman'),
-				('D-4', 'KERING', 'Lahan Kering Sangat Jauh dengan Pemukiman')
+				('S-I', 'BASAH', 'Persawahan Dekat dengan Pemukiman'),
+				('S-II', 'BASAH', 'Persawahan Agak Jauh dengan Pemukiman'),
+				('S-III', 'BASAH', 'Persawahan Jauh dengan Pemukiman'),
+				('S-IV', 'BASAH', 'Persawahan Sangat Jauh dengan Pemukiman'),
+				('D-I', 'KERING', 'Lahan Kering Dekat dengan Pemukiman'),
+				('D-II', 'KERING', 'Lahan Kering Agak Jauh dengan Pemukiman'),
+				('D-III', 'KERING', 'Lahan Kering Jauh dengan Pemukiman'),
+				('D-IV', 'KERING', 'Lahan Kering Sangat Jauh dengan Pemukiman')
 			";
 			$this->db->query($query);
 		}

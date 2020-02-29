@@ -226,7 +226,7 @@ class Data_persil_model extends CI_Model {
 	public function get_persil($id)
 	{
 		$data = false;
-		$strSQL = "SELECT p.`id` as id, u.`nik` as nik, y.`c_desa`, p.`jenis_pemilik` as jenis_pemilik, p.`nama` as nopersil, p.id_pend, p.`id_c_desa`, p.`persil_jenis_id`, kelas, x.`kode`, p.`id_clusterdesa`, p.`luas`, p.`kelas`, p.`pajak`, p.`keterangan`, p.pemilik_luar, p.`no_sppt_pbb`, p.`lokasi`, p.`persil_peruntukan_id`, u.nama as namapemilik, w.rt, w.rw, w.dusun,alamat_luar
+		$strSQL = "SELECT p.`id` as id, u.`nik` as nik, y.`c_desa`, p.`jenis_pemilik` as jenis_pemilik, p.`nama` as nopersil, p.id_pend, p.`id_c_desa`, p.`persil_jenis_id`, kelas, x.`kode`, x.`tipe`, p.`id_clusterdesa`, p.`luas`, p.`kelas`, p.`pajak`, p.`keterangan`, p.pemilik_luar, p.`no_sppt_pbb`, p.`lokasi`, p.`persil_peruntukan_id`, u.nama as namapemilik, w.rt, w.rw, w.dusun,alamat_luar
 			FROM `data_persil` p
 				LEFT JOIN tweb_penduduk u ON u.id = p.id_pend
 				LEFT JOIN tweb_wil_clusterdesa w ON w.id = p.id_clusterdesa
@@ -840,13 +840,26 @@ class Data_persil_model extends CI_Model {
 
 
 
-	public function list_persil_kelas()
+	public function list_persil_kelas($table='')
 	{
-		$data = $this->db->order_by('kode')
+		if($table)
+		{
+			$strSQL = "SELECT id, kode, ndesc, tipe FROM data_persil_kelas WHERE `tipe` like '$table' ORDER BY `data_persil_kelas`.`kode` ASC";
+						$data =$this->db->order_by('kode') 
+						->get_where('ref_persil_kelas', array('tipe' => $table))
+						->result_array();
+			$data = array_combine(array_column($data, 'id'), $data);
+		}
+		else
+		{
+			$data = $this->db->order_by('kode')
 			->get('ref_persil_kelas')
 			->result_array();
+		}
+		
 		return $data;
 	}
+
 
 	public function get_persil_kelas($id=0)
 	{

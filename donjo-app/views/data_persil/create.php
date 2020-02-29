@@ -89,6 +89,16 @@
 											</div>
 										</div>
 										<div class="form-group">
+											<label for="kelas"  class="col-sm-3 control-label required">Tipe Tanah</label>
+											<div class="col-sm-4">
+												<select class="form-control input-sm required" id="tipe" name="tipe"  type="text"  placeholder="Tuliskan Kelas Tanah" >
+													<option value>-- Pilih Tipe Tanah--</option>
+													<option value="BASAH" <?php if ('BASAH'==$persil_detail["tipe"]): ?>selected<?php endif; ?>>Tanah Basah</option>
+													<option value="KERING" <?php if ('KERING'==$persil_detail["tipe"]): ?>selected<?php endif; ?>>Tanah Kering</option>
+													</select>
+											</div>
+										</div>
+										<div class="form-group">
 											<label for="kelas"  class="col-sm-3 control-label required">Kelas Tanah</label>
 											<div class="col-sm-4">
 												<select class="form-control input-sm required" id="kelas" name="kelas"  type="text"  placeholder="Tuliskan Kelas Tanah" >
@@ -188,6 +198,28 @@
 </section>
 </div>
 <script>
+	$(document).ready(function(){
+		$('#tipe').change(function(){ 
+			var id=$(this).val();
+			$.ajax({
+				url : "<?=site_url('data_persil/kelasid')?>",
+				method : "POST",
+				data : {id: id},
+				async : true,
+				dataType : 'json',
+				success: function(data){
+					var html = '';
+					var i;
+					for(i=0; i<data.length; i++){
+						html += '<option value='+data[i].id+'>'+data[i].kode+' '+data[i].ndesc+'</option>';
+					}
+					$('#kelas').html(html);
+				}
+			});
+			return false;
+		}); 
+	});
+
 	function pilih_lokasi(pilih)
 	{
 		if (pilih == 1)

@@ -223,6 +223,7 @@ class Data_persil extends Admin_Controller {
 		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
 		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
 		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
+		print_r($data["persil_detail"]);
 		$nav['act'] = 7;
 		$this->load->view('nav', $nav);
 		$this->load->view('data_persil/create', $data);
@@ -431,6 +432,17 @@ class Data_persil extends Admin_Controller {
 			$data['data_persil'] = $this->data_persil_model->list_c_desa('', $o, 0, 10000);
 			$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
 		$this->load->view('data_persil/persil_excel', $data);
+	}
+
+	public function kelasid()
+	{
+		$data =[];
+		$id = $this->input->post('id');
+		$kelas = $this->data_persil_model->list_persil_kelas($id);
+		foreach ($kelas as $key => $item) {
+			$data[] = array('id' => $key, 'kode' => $item[kode], 'ndesc' => $item['ndesc']);
+		}
+		echo json_encode($data);
 	}
 
 }
