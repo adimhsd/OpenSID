@@ -34,7 +34,8 @@
 		'19.12' => array('migrate' => 'migrasi_1912_ke_2001', 'nextVersion' => '20.01'),
 		'20.01' => array('migrate' => 'migrasi_2001_ke_2002', 'nextVersion' => '20.02'),
 		'20.02' => array('migrate' => 'migrasi_2002_ke_2003', 'nextVersion' => '20.03'),
-		'20.03' => array('migrate' => NULL, 'nextVersion' => NULL)
+		'20.03' => array('migrate' => 'migrasi_2003_ke_2004', 'nextVersion' => '20.04'),
+		'20.04' => array('migrate' => NULL, 'nextVersion' => NULL)
 	);
 
 	public function __construct()
@@ -138,6 +139,13 @@
 		return $result;
   }
 
+  public function AmbilVersiTerbaru()
+  {
+		$array = $this->versionMigrate;
+		end($array);
+		echo key($array);
+  }
+
   private function nop()
   {
   	// Tidak lakukan apa-apa
@@ -200,8 +208,14 @@
 		$this->migrasi_1912_ke_2001();
 		$this->migrasi_2001_ke_2002();
 		$this->migrasi_2002_ke_2003();
+		$this->migrasi_2003_ke_2004();
   }
 
+  private function migrasi_2003_ke_2004()
+  {
+		$this->load->model('migrations/migrasi_2003_ke_2004');
+		$this->migrasi_2003_ke_2004->up();
+  }
   private function migrasi_2002_ke_2003()
   {
   	$this->load->model('migrations/migrasi_2002_ke_2003');
