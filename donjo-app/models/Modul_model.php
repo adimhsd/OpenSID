@@ -3,14 +3,14 @@
 	public function __construct()
 	{
 		parent::__construct();
-    $this->load->model('user_model');
-    // Terpaksa menjalankan migrasi, karena apabila kolom parent
-    // belum ada, menu navigasi tidak bisa ditampilkan
-    if (!$this->db->field_exists('parent', 'setting_modul'))
-    {
-      $this->load->model('database_model');
-      $this->database_model->migrasi_db_cri();
-    }
+		$this->load->model('user_model');
+  	// Terpaksa menjalankan migrasi, karena apabila kolom parent
+  	// belum ada, menu navigasi tidak bisa ditampilkan
+  	if (!$this->db->field_exists('parent', 'setting_modul'))
+  	{
+			$this->load->model('database_model');
+  		$this->database_model->migrasi_db_cri();
+		}
 	}
 
 	function list_data()
@@ -101,19 +101,13 @@
 
 	public function autocomplete()
 	{
-		$sql = "SELECT modul FROM setting_modul WHERE hidden = 0
-					UNION SELECT url FROM setting_modul WHERE  hidden = 0";
-		$query = $this->db->query($sql);
-		$data = $query->result_array();
+		$data = $this->db->select('modul')
+			->where('hidden', 0)
+			->where('parent', 0)
+			->get('setting_modul')->result_array();
 
-		$outp = '';
-		for ($i=0; $i<count($data); $i++)
-		{
-			$outp .= ",'" .$data[$i]['modul']. "'";
-		}
-		$outp = substr($outp, 1);
-		$outp = '[' .$outp. ']';
-		return $outp;
+		$auto = autocomplete_data_ke_str($data);
+		return $auto;
 	}
 
 	private function search_sql()

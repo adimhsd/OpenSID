@@ -1245,13 +1245,6 @@
 		return $data;
 	}
 
-	public function get_desa()
-	{
-		$sql = "SELECT * FROM config WHERE 1";
-		$query = $this->db->query($sql);
-		return $query->row_array();
-	}
-
 	public function is_anggota_keluarga($id)
 	{
 		$this->db->select('id_kk');
@@ -1425,6 +1418,5 @@
 		}
 		return $data;
 	}
-
 
 }

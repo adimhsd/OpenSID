@@ -4,9 +4,8 @@ class Migrasi_2002_ke_2003 extends CI_model {
 	public function up()
 	{
 		// Hapus setting tombol cetak surat langsung
-			$this->db->where('key', 'tombol_cetak_surat')
-				->delete('setting_aplikasi');
-
+		$this->db->where('key', 'tombol_cetak_surat')
+			->delete('setting_aplikasi');
 		// Setting nilai default supaya tidak error pada sql strict mode
 		$fields = array();
 		$fields['parrent'] = array('type' => 'INT', 'constraint' => 4, 'default' => 0);
@@ -15,56 +14,35 @@ class Migrasi_2002_ke_2003 extends CI_model {
 		$fields = array();
 		$fields['kode_surat'] = array('type' => 'VARCHAR', 'constraint' => 10, 'null' => TRUE, 'default' => NULL);
 	  $this->dbforge->modify_column('tweb_surat_format', $fields);
-
-	  
-		// Buat tabel jenis Kelas Persil
-		if (!$this->db->table_exists('ref_persil_kelas') )
+		// Tambah kolom hits pada artikel
+		if (!$this->db->field_exists('hit','artikel'))
 		{
-			$query = "
-			CREATE TABLE IF NOT EXISTS `ref_persil_kelas` (
-				  `id` int(10) NOT NULL AUTO_INCREMENT,
-				  `tipe` varchar(12) NOT NULL,
-				  `kode` varchar(12) NOT NULL,
-				  `ndesc` text NULL,
-				  PRIMARY KEY (`id`)
-			)";
-			$this->db->query($query);
-
-			$query = "INSERT INTO `ref_persil_kelas` (`kode`, `tipe`,`ndesc`) VALUES
-				('S-I', 'BASAH', 'Persawahan Dekat dengan Pemukiman'),
-				('S-II', 'BASAH', 'Persawahan Agak Jauh dengan Pemukiman'),
-				('S-III', 'BASAH', 'Persawahan Jauh dengan Pemukiman'),
-				('S-IV', 'BASAH', 'Persawahan Sangat Jauh dengan Pemukiman'),
-				('D-I', 'KERING', 'Lahan Kering Dekat dengan Pemukiman'),
-				('D-II', 'KERING', 'Lahan Kering Agak Jauh dengan Pemukiman'),
-				('D-III', 'KERING', 'Lahan Kering Jauh dengan Pemukiman'),
-				('D-IV', 'KERING', 'Lahan Kering Sangat Jauh dengan Pemukiman')
-			";
-			$this->db->query($query);
+			$this->db->query("ALTER TABLE artikel ADD COLUMN hit INT NULL DEFAULT '0'");
 		}
-
-		// Buat tabel id C-DESA
-		if (!$this->db->table_exists('data_persil_c_desa') )
-		{
-			$query = "
-			CREATE TABLE `data_persil_c_desa`(
-			`id` INT(11) NOT NULL AUTO_INCREMENT,
-			`c_desa` INT(11) NOT NULL,
-    		`id_pend` INT(11) NULL,
-    		PRIMARY KEY(`id`),
-    		UNIQUE(`c_desa`)
-			)";
-			$this->db->query($query);
-		}
-
-		//tambahkan kolom untuk beberapa data persil
-		if (!$this->db->field_exists('id_c_desa','data_persil'))
-		{
-			$this->db->query("ALTER TABLE data_persil ADD `id_c_desa` INT NOT NULL AFTER `id`");
-			$this->db->query("ALTER TABLE data_persil ADD `pajak` INT NULL AFTER `persil_peruntukan_id`");
-			$this->db->query("ALTER TABLE data_persil ADD `keterangan` text NULL AFTER `pajak`");
-			$this->db->query("ALTER TABLE data_persil ADD `lokasi` TEXT  NULL AFTER `pemilik_luar`");
-		}
-
+		// Tambah Modul Pengunjung pada Admin WEB
+		$data = array(
+				'id' => 205,
+				'modul' => 'Pengunjung',
+				'url' => 'pengunjung/clear',
+				'aktif' => 1,
+				'ikon' => 'fa-bar-chart',
+				'urut' => 10,
+				'level' => 4,
+				'hidden' => 0,
+				'ikon_kecil' => '',
+				'parent' => 13
+				);
+		$sql = $this->db->insert_string('setting_modul', $data);
+		$sql .= " ON DUPLICATE KEY UPDATE
+				modul = VALUES(modul),
+				aktif = VALUES(aktif),
+				ikon = VALUES(ikon),
+				urut = VALUES(urut),
+				level = VALUES(level),
+				hidden = VALUES(hidden),
+				ikon_kecil = VALUES(ikon_kecil),
+				parent = VALUES(parent)
+				";
+		$this->db->query($sql);
 	}
 }
