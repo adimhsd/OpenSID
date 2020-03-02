@@ -395,15 +395,6 @@ class Data_persil_model extends CI_Model {
 		return $data;
 	}
 
-	private function validasi_persil(&$data)
-	{
-		// Bersihkan data
-		$data['nomor_surat'] = strip_tags($data['nomor_surat']);
-		$data['pengirim'] = alfanumerik_spasi($data['pengirim']);
-		$data['isi_singkat'] = strip_tags($data['isi_singkat']);
-		$data['isi_disposisi'] = strip_tags($data['isi_disposisi']);
-	}
-
 	public function simpan_persil()
 	{
 		$hasil = false;
