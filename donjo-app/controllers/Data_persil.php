@@ -264,14 +264,41 @@ class Data_persil extends Admin_Controller {
 	{
 		$this->load->helper('form');
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('nama', 'Nama Jenis Persil', 'required');
+		$this->form_validation->set_rules('c_desa','Nomor Surat C-DESA','required|trim|numeric');
+		$this->form_validation->set_rules('nama','Nomor Surat Persil','required|trim|numeric');
+		$this->form_validation->set_rules('luas','Luas','required|trim|numeric');
+		$this->form_validation->set_rules('pajak','pajak','trim|numeric');
 
-		$header = $this->header_model->get_data();
-		$header['minsidebar'] = 1;
-		$this->load->view('header', $header);
+		if($this->form_validation->run() != false)
+		{
+			$header = $this->header_model->get_data();
+			$header['minsidebar'] = 1;
+			$this->load->view('header', $header);
 
-		$data["hasil"] = $this->data_persil_model->simpan_persil();
-		redirect("data_persil/clear");
+			$data["hasil"] = $this->data_persil_model->simpan_persil();
+			redirect("data_persil/clear");
+		}
+		else
+		{
+			$_SESSION["success"] = -1;
+			$_SESSION["error_msg"] = trim(strip_tags(validation_errors()));
+			$jenis_pemilik = $this->input->post('jenis_pemilik');
+			$id	= $this->input->post('id');
+			if ($jenis_pemilik == 1) 
+			{
+				if($id)
+					redirect("data_persil/create/edit/".$id);
+				else
+					redirect("data_persil/create");
+			}
+			else
+			{
+				if($id)
+					redirect("data_persil/create_ext/edit/".$id);
+				else
+					redirect("data_persil/create_ext");
+			}
+		}
 	}
 
 	public function simpan_c_desa($page=1)

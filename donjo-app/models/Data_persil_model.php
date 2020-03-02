@@ -395,6 +395,15 @@ class Data_persil_model extends CI_Model {
 		return $data;
 	}
 
+	private function validasi_persil(&$data)
+	{
+		// Bersihkan data
+		$data['nomor_surat'] = strip_tags($data['nomor_surat']);
+		$data['pengirim'] = alfanumerik_spasi($data['pengirim']);
+		$data['isi_singkat'] = strip_tags($data['isi_singkat']);
+		$data['isi_disposisi'] = strip_tags($data['isi_disposisi']);
+	}
+
 	public function simpan_persil()
 	{
 		$hasil = false;
@@ -407,7 +416,7 @@ class Data_persil_model extends CI_Model {
 				$data['nama'] = $_POST["nama"];
 				$data['jenis_pemilik'] = $_POST["jenis_pemilik"];
 				if ($data['jenis_pemilik'] == 2)
-					$data['pemilik_luar'] = $_POST['nik'];
+					$data['pemilik_luar'] = strip_tags($_POST['nik']);
 				else
 				{
 					if ($_POST['nik'] <> $_POST['nik_lama'])
@@ -419,7 +428,7 @@ class Data_persil_model extends CI_Model {
 					}
 				}
 
-				$data['alamat_luar'] = $_POST["alamat_luar"];
+				$data['alamat_luar'] = strip_tags($_POST["alamat_luar"]);
 				$data['id_c_desa'] = $this->db->select('id')->
 							where('c_desa', ltrim($_POST['c_desa'], '0'))->
 							get('data_persil_c_desa')->row()->id;
@@ -429,9 +438,9 @@ class Data_persil_model extends CI_Model {
 				$data['luas'] = $_POST["luas"];
 				$data['kelas'] = $_POST["kelas"];
 				$data['pajak'] = $_POST["pajak"];
-				$data['keterangan'] = $_POST["ket"];
-				$data['lokasi'] = $_POST["lokasi"];
-				$data['no_sppt_pbb'] = $_POST["sppt"];
+				$data['keterangan'] = strip_tags($_POST["ket"]);
+				$data['lokasi'] = strip_tags($_POST["lokasi"]);
+				$data['no_sppt_pbb'] = strip_tags($_POST["sppt"]);
 				$data['userID'] = $_SESSION['user'];
 				$outp = $this->db->where('id', $_POST['id'])->update('data_persil', $data);
 			}
@@ -492,9 +501,9 @@ class Data_persil_model extends CI_Model {
 						$data['luas'] = $_POST["luas"];
 						$data['kelas'] = $_POST["kelas"];
 						$data['pajak'] = $_POST["pajak"];
-						$data['keterangan'] = $_POST["ket"];
-						$data['lokasi'] = $_POST["lokasi"];
-						$data['no_sppt_pbb'] = $_POST["sppt"];
+						$data['keterangan'] = strip_tags($_POST["ket"]);
+						$data['lokasi'] = strip_tags($_POST["lokasi"]);
+						$data['no_sppt_pbb'] = strip_tags($_POST["sppt"]);
 						$data['userID'] = $_SESSION['user'];
 						$outp = $this->db->insert('data_persil', $data);
 						
@@ -513,19 +522,19 @@ class Data_persil_model extends CI_Model {
 						$outp = $this->db->insert('data_persil_c_desa', $datac);
 						$data['id_c_desa'] = $this->db->insert_id();
 					}
-					$data['nama'] = $_POST["nama"];
+					$data['nama'] = strip_tags($_POST["nama"]);
 					$data['jenis_pemilik'] = $_POST["jenis_pemilik"];
-					$data['pemilik_luar'] = $_POST['nik'];
-					$data['alamat_luar'] = $_POST["alamat_luar"];
+					$data['pemilik_luar'] = strip_tags($_POST['nik']);
+					$data['alamat_luar'] = strip_tags($_POST["alamat_luar"]);
 					$data['persil_jenis_id'] = $_POST["cid"];
 					$data['id_clusterdesa'] = $_POST["pid"];
 					$data['persil_peruntukan_id'] = $_POST["sid"];
 					$data['luas'] = $_POST["luas"];
 					$data['kelas'] = $_POST["kelas"];
 					$data['pajak'] = $_POST["pajak"];
-					$data['keterangan'] = $_POST["ket"];
-					$data['lokasi'] = $_POST["lokasi"];
-					$data['no_sppt_pbb'] = $_POST["sppt"];
+					$data['keterangan'] = strip_tags($_POST["ket"]);
+					$data['lokasi'] = strip_tags($_POST["lokasi"]);
+					$data['no_sppt_pbb'] = strip_tags($_POST["sppt"]);
 					$data['userID'] = $_SESSION['user'];
 					$outp = $this->db->insert('data_persil', $data);
 				}
