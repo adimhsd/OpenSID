@@ -291,21 +291,6 @@ function AmbilVersi()
 }
 
 /**
- * Ambil Versi Terbaru
- *
- * Mengembalikan nomor versi aplikasi Terbaru 
- *
- * @access  public
- * @return  string
- */
-function AmbilVersiTerbaru()
-{
-	$CI = get_instance();
-	$CI->load->model('database_model');
-	return $CI->database_model->AmbilVersiTerbaru();
-}
-
-/**
  * favico_desa
  *
  * Mengembalikan path lengkap untuk file favico desa

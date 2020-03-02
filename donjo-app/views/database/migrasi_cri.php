@@ -2,7 +2,7 @@
 											<div class="row">
 												<div class="col-md-12">
 													<div class="box-header with-border">
-														<h3 class="box-title"><strong>Migrasi Database dari OpenSID <?= AmbilVersi()?> Ke OpenSID <?=AmbilVersiTerbaru()?></strong></h3>
+														<h3 class="box-title"><strong>Migrasi Database Ke OpenSID <?=AmbilVersi()?></strong></h3>
 													</div>
 													<div class="box-body">
 														<div class="row">
@@ -25,7 +25,7 @@
 																				<td style="padding-top:20px;padding-bottom:10px;">
 																					<div class="form-group">
 																						<div class="col-sm-8 col-lg-5">
-																							<a href="#" class="btn btn-block btn-danger btn-sm ajax"  title="Import" onclick="document.getElementById('excell').submit();" data-toggle="modal" data-target="#loading"> <i class="fa fa-spin fa-refresh"></i> Migrasi Database Dari OpenSID <?= AmbilVersi()?> Ke OpenSID <?= AmbilVersiTerbaru()?></a>
+																							<a href="#" class="btn btn-block btn-danger btn-sm ajax"  title="Import" onclick="document.getElementById('excell').submit();" data-toggle="modal" data-target="#loading"> <i class="fa fa-spin fa-refresh"></i> Migrasi Database Ke OpenSID <?= AmbilVersi()?></a>
 																						</div>
 																					</div>
 																					<div class="ajax-content"></div>

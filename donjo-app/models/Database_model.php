@@ -139,13 +139,6 @@
 		return $result;
   }
 
-  public function AmbilVersiTerbaru()
-  {
-		$array = $this->versionMigrate;
-		end($array);
-		echo key($array);
-  }
-
   private function nop()
   {
   	// Tidak lakukan apa-apa

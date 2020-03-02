@@ -29,8 +29,13 @@ class Migrasi_2003_ke_2004 extends CI_model {
 			$this->dbforge->add_key('id', TRUE);
 			$this->dbforge->add_field($fields);
 			$this->dbforge->create_table('ref_persil_kelas');
+		}
+		else
+		{
+			$this->db->truncate('ref_persil_kelas');
+		}
 
-			$data = [
+		$data = [
 			['kode' => 'S-I', 'tipe' => 'BASAH', 'ndesc' => 'Persawahan Dekat dengan Pemukiman'],
 			['kode' => 'S-II', 'tipe' => 'BASAH', 'ndesc' => 'Persawahan Agak Dekat dengan Pemukiman'],
 			['kode' => 'S-III', 'tipe' => 'BASAH', 'ndesc' => 'Persawahan Jauh dengan Pemukiman'],
@@ -40,8 +45,7 @@ class Migrasi_2003_ke_2004 extends CI_model {
 			['kode' => 'D-III', 'tipe' => 'KERING', 'ndesc' => 'Lahan Kering Jauh dengan Pemukiman'],
 			['kode' => 'D-IV', 'tipe' => 'KERING', 'ndesc' => 'Lahan Kering Sanga Jauh dengan Pemukiman'],
 			];
-			$this->db->insert_batch('ref_persil_kelas', $data);
-		}
+		$this->db->insert_batch('ref_persil_kelas', $data);
 
 		// Buat tabel id C-DESA
 		if (!$this->db->table_exists('data_persil_c_desa') )
