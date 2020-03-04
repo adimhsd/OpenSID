@@ -22,6 +22,13 @@ class Data_persil extends Admin_Controller {
 		redirect('data_persil');
 	}
 
+	public function persil_clear()
+	{
+		unset($_SESSION['cari']);
+		$_SESSION['per_page'] = 20;
+		redirect('data_persil/persil');
+	}
+
 	public function index($kat=0, $mana=0, $page=1, $o=0)
 	{
 		$header = $this->header_model->get_data();
@@ -468,6 +475,12 @@ class Data_persil extends Admin_Controller {
 		foreach ($kelas as $key => $item) {
 			$data[] = array('id' => $key, 'kode' => $item[kode], 'ndesc' => $item['ndesc']);
 		}
+		echo json_encode($data);
+	}
+
+	public function autocomplete()
+	{
+		$data = $this->data_persil_model->autocomplete($this->input->post('cari'));
 		echo json_encode($data);
 	}
 

@@ -1,13 +1,22 @@
 <script>
-	$(function()
-	{
-		var keyword = <?= $keyword?> ;
-		$( "#cari" ).autocomplete(
-		{
-			source: keyword,
-			maxShowItems: 10,
-		});
-	});
+  $( function() {
+	  $( "#cari" ).autocomplete({
+	    source: function( request, response ) {
+	      $.ajax( {
+					type: "POST",
+	        url: '<?= site_url("data_persil/autocomplete")?>',
+	        dataType: "json",
+	        data: {
+	          cari: request.term
+	        },
+	        success: function( data ) {
+	          response( JSON.parse( data ));
+	        }
+	      } );
+	    },
+	    minLength: 2,
+	  } );
+  } );
 </script>
 <div class="content-wrapper">
 	<section class="content-header">
@@ -38,6 +47,7 @@
 										<a href="<?= site_url("data_persil/excel/$o")?>" class="btn btn-social btn-flat bg-navy btn-sm btn-sm visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" title="Unduh Data" target="_blank">
 											<i class="fa fa-download"></i>Unduh
 										</a>
+										<a href="<?= site_url("data_persil/clear")?>" class="btn btn-social btn-flat bg-purple btn-sm visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block"><i class="fa fa-refresh"></i>Bersihkan</a>
 										<form id="mainform" name="mainform" action="" method="post">
 											<div class="row">
 												<div class="col-sm-12">

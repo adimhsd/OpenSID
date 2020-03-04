@@ -6,29 +6,26 @@ class Data_persil_model extends CI_Model {
 		$this->load->database();
 	}
 
-	public function autocomplete()
+	public function autocomplete($cari='')
 	{
-		$sql = "SELECT pemilik_luar as nik
-			FROM data_persil
-			UNION
-				SELECT p.nik AS nik
-				FROM data_persil u
-				LEFT JOIN tweb_penduduk p ON u.id_pend = p.id
-			UNION
-				SELECT p.nama AS nik
-				FROM data_persil u
-				LEFT JOIN tweb_penduduk p ON u.id_pend = p.id";
+		$sql = "SELECT
+					pemilik_luar AS nik
+				FROM
+					data_persil
+				WHERE pemilik_luar LIKE '%$cari%'
+				UNION
+				SELECT
+					p.nama AS nik
+				FROM
+					data_persil u
+				LEFT JOIN tweb_penduduk p ON
+					u.id_pend = p.id
+				WHERE p.nama LIKE '%$cari%'";
 		$query = $this->db->query($sql);
 		$data = $query->result_array();
 
-		$outp = '';
-		for ($i=0; $i<count($data); $i++)
-		{
-			$outp .= ",'" .$data[$i]['nik']. "'";
-		}
-		$outp = strtolower(substr($outp, 1));
-		$outp = '[' .$outp. ']';
-		return $outp;
+		$str = autocomplete_data_ke_str($data);
+		return $str;
 	}
 
 	private function search_sql()
@@ -97,10 +94,21 @@ class Data_persil_model extends CI_Model {
 		return $this->paging;
 	}
 
+	private function main_sql_c_desa()
+	{
+		$sql = " FROM data_persil_c_desa y
+				LEFT JOIN data_persil p ON p.id_c_desa = y.id
+				LEFT JOIN tweb_penduduk u ON u.id = y.id_pend
+				LEFT JOIN tweb_wil_clusterdesa w ON w.id = u.id_cluster
+				LEFT JOIN ref_persil_kelas x ON x.id = p.kelas
+				WHERE 1  ";
+		return $sql;
+	}
+
 	public function paging_c_desa($kat='', $mana=0, $p=1)
 	{
 		
-		$sql = "SELECT COUNT(*) AS jml FROM data_persil_c_desa WHERE 1 ";
+		$sql = "SELECT COUNT(*) AS jml ".$this->main_sql_c_desa().$this->search_sql();
 		$query = $this->db->query($sql);
 		$row = $query->row_array();
 		$jml_data = $row['jml'];
@@ -120,14 +128,10 @@ class Data_persil_model extends CI_Model {
 		$strSQL = "SELECT y.`id` AS id, y.`c_desa`, p.`id_c_desa`, x.`kode`, u.nik AS nik, p.`id_pend`, p.`id_clusterdesa`,  p.`jenis_pemilik`, u.`nama` as namapemilik, p.pemilik_luar, p.`alamat_luar`,COUNT(p.id_c_desa) AS jumlah,
 			p.`lokasi`, w.rt, w.rw, w.dusun, p.rdate as tanggal_daftar,
 			SUM(IF(x.`kode`LIke '%S%', p.`luas`,0)) as basah,
-			SUM(IF(x.`kode`LIke '%D%', p.`luas`,0)) as kering 
-
-		FROM data_persil_c_desa y
-		LEFT JOIN data_persil p ON p.id_c_desa = y.id
-		LEFT JOIN tweb_penduduk u ON u.id = y.id_pend
-		LEFT JOIN tweb_wil_clusterdesa w ON w.id = u.id_cluster
-		LEFT JOIN ref_persil_kelas x ON x.id = p.kelas
+			SUM(IF(x.`kode`LIke '%D%', p.`luas`,0)) as kering
+		".$this->main_sql_c_desa().$this->search_sql()." 
 		GROUP by c_desa";
+
 		$strSQL .= " LIMIT ".$offset.",".$per_page;
 		$query = $this->db->query($strSQL);
 		if ($query->num_rows() > 0)
