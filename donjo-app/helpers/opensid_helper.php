@@ -740,4 +740,21 @@ function buat_slug($data_slug)
 	return $slug;
 }
 
+function luas($int=0, $satuan="meter")
+{
+	if (($int / 10000) >= 1)
+	{
+		$ukuran = $int/10000;
+		$pisah = explode('.', $ukuran);
+		$luas['ha'] = number_format($pisah[0]);
+		$luas['meter'] = round(($ukuran-$luas["ha"])*10000, 2);
+	}
+	else
+	{
+		$luas['ha'] =0;
+		$luas['meter'] = round($int,2);	
+	}
+	$hasil = ($int!=0)?$luas[$satuan]:null;
+	return $hasil;
+}
 ?>

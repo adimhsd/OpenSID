@@ -54,21 +54,19 @@
                                     <th colspan="6" class="head batas" >TANAH KERING</th>                                   
                                 </tr>
                                 <tr class="bg">
-                                    <th rowspan="3" width="70">Nomor Persil / Blok</th>
+                                    <th rowspan="3" width="60">Nomor Persil / Blok</th>
                                     <th rowspan="3" width="34" class="vertikal">Kelas Desa</th>
-                                    <th colspan="3" width="100">Menurut Daftar Perincian</th>
-                                    <th rowspan="3" width="80"  class="batas" >Sebab dan Tanggal Perubahan</th>
-                                    <th rowspan="3" width="70">Nomor Persil / Blok</th>
+                                    <th colspan="3" width="75">Menurut Daftar Perincian</th>
+                                    <th rowspan="3" width="125"  class="batas" >Sebab dan Tanggal Perubahan</th>
+                                    <th rowspan="3" width="60">Nomor Persil / Blok</th>
                                     <th rowspan="3" width="34" class="vertikal">Kelas Desa</th>
-                                    <th colspan="3" width="100">Menurut Daftar Perincian</th>
-                                    <th rowspan="3" width="80">Sebab dan Tanggal Perubahan</th>
+                                    <th colspan="3" width="75">Menurut Daftar Perincian</th>
+                                    <th rowspan="3" width="125">Sebab dan Tanggal Perubahan</th>
                                 </tr>
                                 <tr class="bg">
-                                    <th>Luas</th>
-                                    <th>Milik</th>
+                                    <th colspan="2">Luas Milik</th>
                                     <th>Pajak</th>
-                                    <th>Luas</th>
-                                    <th>Milik</th>
+                                    <th colspan="2">Luas Milik</th>
                                     <th>Pajak</th>
                                 </tr>
                                 <tr class="bg">
@@ -85,15 +83,15 @@
                                     <tr>
                                         <td class="row" > <?= $basah[$i]["nopersil"] ?></td>
                                         <td class="row" ><?= $basah[$i]["kode"] ?></td>
-                                        <td class="row" ><?= $basah[$i]["ha"] ?></td>
-                                        <td class="row" ><?= $basah[$i]["luas"] ?></td>
+                                        <td class="row" ><?= luas($basah[$i]["luas"], "ha") ?></td>
+                                        <td class="row" ><?= luas($basah[$i]["luas"], "meter") ?></td>
                                         <td class="row" ><?= $basah[$i]["pajak"] ?></td>
                                         <td class="row batas" ><?= $basah[$i]["keterangan"] ?></td> 
 
                                         <td class="row" > <?= $kering[$i]["nopersil"] ?></td>
                                         <td class="row" ><?= $kering[$i]["kode"] ?></td>
-                                        <td class="row" ><?= $kering[$i]["ha"] ?></td>
-                                        <td class="row" ><?= $kering[$i]["luas"] ?></td>
+                                        <td class="row" ><?= luas($kering[$i]["luas"], "ha")?></td>
+                                        <td class="row" ><?= luas($kering[$i]["luas"], "meter") ?></td>
                                         <td class="row" ><?= $kering[$i]["pajak"] ?></td>
                                         <td class="row " ><?= $kering[$i]["keterangan"] ?></td> 
                                     </tr>
