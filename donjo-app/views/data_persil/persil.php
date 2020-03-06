@@ -84,7 +84,7 @@
 																	<tr>
 																		<td><?= $item['no']?></td>
 																		<td nowrap>
-																			<a href="<?= site_url("data_persil/detail/".$item["id"])?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
+																			<a href="<?= site_url("data_persil/detail_persil/".$item["id"])?>" class="btn bg-purple btn-flat btn-sm"  title="Rincian"><i class="fa fa-bars"></i></a>
 																			<?php if ($item['jenis_pemilik'] == '2'): ?>
 																				<a href="<?= site_url("data_persil/create_ext/edit/".$item["id"])?>" class="btn bg-orange btn-flat btn-sm"  title="Ubah Data"><i class="fa fa-edit"></i></a>
 																				<?php else: ?>
