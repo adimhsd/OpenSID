@@ -182,10 +182,11 @@
 														 <div class="input-sm col-sm-8">
 															 <?= $no++ ?>. <?= tgl_indo_out($item['tanggalmutasi']) ?> <?= $item['sebabmutasi'] ?> 
 															 <?= !empty($item['luasmutasi']) ? "seluas ".number_format($item['luasmutasi'])." m2 " : null ?>
-															  <?= !empty($item['c_desa_awal']) ? "dari C-DESA ".$item['c_desa_awal']: null ?>
+															  <?= !empty($item['c_desa_awal']) ? "dari C-DESA ".$item['c_desa_awal']: null ?> 
+															   <?= !empty($item['keterangan']) ? " ".$item['keterangan']: null ?>
 														 </div>
 														 <div class="col-xs-4"><a href="<?= site_url("data_persil/mutasi/edit/".$item["id"]) ?>" class="btn bg-yellow btn-flat btn-sm " title="Edit"><i class="fa fa-edit"></i></a>
-														 <a href="<?= site_url("data_persil/hapus_mutasi/".$item["id_persil"]."/".$item["id"]) ?>" class="btn bg-red btn-flat btn-sm " title="Hapus"><i class="fa fa-edit"></i></a></div>
+														 <a href="<?= site_url("data_persil/hapus_mutasi/".$item["id_persil"]."/".$item["id"]) ?>" class="btn bg-red btn-flat btn-sm " title="Hapus"><i class="fa fa-times "></i></a></div>
 													<?php endforeach; ?>
 													</div>
 												</div>

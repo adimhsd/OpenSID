@@ -35,7 +35,7 @@ class Data_persil_model extends CI_Model {
 			$cari = $_SESSION['cari'];
 			$kw = $this->db->escape_like_str($cari);
 			$kw = '%' .$kw. '%';
-			$search_sql= " AND (u.nama LIKE '$kw' OR p.pemilik_luar like '$kw' OR u.nik LIKE '$kw')";
+			$search_sql= " AND (u.nama LIKE '$kw' OR p.pemilik_luar like '$kw' OR y.c_desa LIKE '$kw')";
 			return $search_sql;
 			}
 		}

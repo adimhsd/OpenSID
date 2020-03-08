@@ -86,14 +86,14 @@
                                         <td class="row" ><?= luas($basah[$i]["luas"], "ha") ?></td>
                                         <td class="row" ><?= luas($basah[$i]["luas"], "meter") ?></td>
                                         <td class="row" ><?= $basah[$i]["pajak"] ?></td>
-                                        <td class="row batas" ><?= $basah[$i]["keterangan"] ?></td> 
+                                        <td class="row batas" style="text-align: left; text-transform:none" ><?= list_mutasi($this->data_persil_model->list_persil_mutasi($basah[$i]["id"]))?></td> 
 
                                         <td class="row" > <?= $kering[$i]["nopersil"] ?></td>
                                         <td class="row" ><?= $kering[$i]["kode"] ?></td>
                                         <td class="row" ><?= luas($kering[$i]["luas"], "ha")?></td>
                                         <td class="row" ><?= luas($kering[$i]["luas"], "meter") ?></td>
                                         <td class="row" ><?= $kering[$i]["pajak"] ?></td>
-                                        <td class="row " ><?= $kering[$i]["keterangan"] ?></td> 
+                                        <td class="row "style="text-align: left; text-transform:none" ><?= list_mutasi($this->data_persil_model->list_persil_mutasi($kering[$i]["id"]))?></td> 
                                     </tr>
                                 <?php  }   ?>
                             </tbody>

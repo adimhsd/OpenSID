@@ -757,4 +757,21 @@ function luas($int=0, $satuan="meter")
 	$hasil = ($int!=0)?$luas[$satuan]:null;
 	return $hasil;
 }
+
+function list_mutasi($mutasi=[])
+{
+	if($mutasi)
+	{
+		foreach($mutasi as $item)
+		{
+			echo "<p>";
+			echo tgl_indo_out($item['tanggalmutasi']).'<br />'.$item['sebabmutasi'];
+			echo !empty($item['luasmutasi']) ? " ".number_format($item['luasmutasi'])." m2 " : null;
+			echo !empty($item['c_desa_awal']) ? " dari C-DESA ".$item['c_desa_awal']: null;
+			echo !empty($item['keterangan']) ? " ".$item['keterangan']: null;
+			echo "</p>";
+		}
+	}		
+}
+
 ?>

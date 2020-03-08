@@ -182,6 +182,7 @@ class Data_persil extends Admin_Controller {
 		$this->load->view('header', $header);
 
 		$data["persil_detail"] = $this->data_persil_model->get_persil($id);
+		$data["persil_mutasi"] = $this->data_persil_model->list_persil_mutasi($id);
 		$data["persil_lokasi"] = $this->data_persil_model->list_dusunrwrt();
 		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
 		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();

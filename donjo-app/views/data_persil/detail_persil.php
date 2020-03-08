@@ -97,7 +97,13 @@
 													<tr>
 														<td>Sebab Dan Tanggal Perubahan</td>
 														<td >:</td>
-														<td><?= $persil_detail["keterangan"]?></td>
+														<td><?php $no =1; foreach($persil_mutasi as $item) : ?>
+														 <?= $no++ ?>. <?= tgl_indo_out($item['tanggalmutasi']) ?> <?= $item['sebabmutasi'] ?> 
+															 <?= !empty($item['luasmutasi']) ? "seluas ".number_format($item['luasmutasi'])." m2 " : null ?>
+															  <?= !empty($item['c_desa_awal']) ? "dari C-DESA ".$item['c_desa_awal']: null ?> 
+															  <?= !empty($item['keterangan']) ? " ".$item['keterangan']: null ?>
+														 <br/>
+													<?php endforeach; ?></td>
 													</tr>
 													
 													<tr>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Data Penduduk</title>
+		<title>Data C-DESA</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<?php if (is_file(LOKASI_LOGO_DESA . "favicon.ico")): ?>
 			<link rel="shortcut icon" href="<?= base_url()?><?= LOKASI_LOGO_DESA?>favicon.ico" />
@@ -34,18 +34,23 @@
 						<tr class="border thick">
 							<th colspan="2" >NOMOR</th>
 							<th colspan="3" >PEMILIK</th>
-							<th colspan="2" >LUAS TANAH</th>
-							<th rowspan="2" >TANGGAL TERDAFTAR</th>
+							<th colspan="4" >LUAS TANAH</th>
+							<th rowspan="3" >TANGGAL TERDAFTAR</th>
 						</tr>
 						<tr>
-							<th >URUT</th>
-							<th >C-DESA</th>
-							<th >NAMA</th>
-							<th >NIK</th>
-							<th >ALAMAT</th>
-							<th> TANAH BASAH <p>(M2)</p></th>
-							<th> TANAH KERING <p>(M2)</p></th>
+							<th rowspan="2">URUT</th>
+							<th rowspan="2">C-DESA</th>
+							<th rowspan="2">NAMA</th>
+							<th rowspan="2">NIK</th>
+							<th rowspan="2">ALAMAT</th>
+							<th colspan="2" > TANAH BASAH</th>
+							<th colspan="2"> TANAH KERING</th>
 						</tr>
+						<tr>
+							<th width="100">Ha</th>
+							<th width="100">m2</th>
+							<th width="100">Ha</th>
+							<th width="100">m2</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -62,8 +67,10 @@
 								<td>-</td>
 								<td><?= $persil["alamat_luar"]?></td>
 							<?php endif; ?>
-							<td> <?= $persil['basah'] ?></td>
-							<td> <?= $persil['kering'] ?></td>
+							<td> <?= luas($persil['basah'], "ha") ?></td>
+							<td> <?= luas($persil['basah'], "meter") ?></td>
+							<td> <?= luas($persil['kering'], "ha") ?></td>
+							<td> <?= luas($persil['kering'], "meter") ?></td>
 							<td><?= tgl_indo($persil['tanggal_daftar'])?></td>
 						</tr>
 						<?php endforeach; ?>

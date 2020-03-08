@@ -121,7 +121,7 @@
 																			<td><?= $persil_kelas[$item["kelas"]]['kode']?></td>
 																			<td><?= $item["luas"] ?></td>
 																			<td><?= $item["pajak"] ?></td>
-																			<td><?= $item["keterangan"] ?></td>
+																			<td><?= list_mutasi($this->data_persil_model->list_persil_mutasi($item["id"]))?></td>
 																			<td><?= $persil_peruntukan[$item["persil_peruntukan_id"]][0]?><br/><?= $persil_peruntukan[$item["persil_peruntukan_id"]][1]?></td>
 																			<td><?= $item["no_sppt_pbb"] ?></td>
 																			<td><?= ($item["lokasi"])?: "RT: ".$item["rt"]." RW: ".$item["rw"]." Dusun ".strtoupper($item["dusun"]) ?></td>
