@@ -208,6 +208,7 @@ class Data_persil extends Admin_Controller {
 		if ($mode === 'edit')
 		{ 
 			$data["persil_detail"] = $this->data_persil_model->get_persil($id);
+			$data["persil_mutasi"] = $this->data_persil_model->list_persil_mutasi($id);
 		}
 		elseif ($mode === 'add')
 		{
@@ -230,6 +231,7 @@ class Data_persil extends Admin_Controller {
 		$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
 		$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
 		$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
+		$data["persil_sebab_mutasi"] = $this->data_persil_model->list_persil_sebab_mutasi();
 		$nav['act'] = 7;
 		$this->load->view('nav', $nav);
 		$this->load->view('data_persil/create', $data);
@@ -251,6 +253,7 @@ class Data_persil extends Admin_Controller {
 		if ($mode === 'edit')
 		{ 
 			$data["persil_detail"] = $this->data_persil_model->get_persil($id);
+			$data["persil_mutasi"] = $this->data_persil_model->list_persil_mutasi($id);
 		}
 		elseif ($mode === 'add')
 		{
@@ -482,6 +485,60 @@ class Data_persil extends Admin_Controller {
 	{
 		$data = $this->data_persil_model->autocomplete($this->input->post('cari'));
 		echo json_encode($data);
+	}
+
+	public function mutasi($mode, $id=0, $ext=1)
+	{
+		$header = $this->header_model->get_data();
+		$header['minsidebar'] = 1;
+		$this->load->view('header', $header);
+		$nav['act'] = 7;
+		$this->tab_ini = 11;
+		$this->load->view('nav', $nav);
+		$data["id"] = $id;
+		if ($mode === 'edit')
+		{
+			$data["jenis"] = $ext;
+			$data['form_action'] = site_url("data_persil/simpan_mutasi");
+			$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
+			$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
+			$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
+			$data["persil_sebab_mutasi"] = $this->data_persil_model->list_persil_sebab_mutasi();
+			$data["persil_mutasi"] = $this->data_persil_model->get_persil_mutasi($id);
+			$this->load->view('data_persil/mutasi', $data);
+		}
+		else
+		{
+			$data["jenis"] = $id;
+			$data['form_action'] = site_url("data_persil/simpan_mutasi");
+			$data['no_persil'] = $mode; 
+			$data["persil_peruntukan"] = $this->data_persil_model->list_persil_peruntukan();
+			$data["persil_jenis"] = $this->data_persil_model->list_persil_jenis();
+			$data["persil_kelas"] = $this->data_persil_model->list_persil_kelas();
+			$data["persil_detail"] = $this->data_persil_model->get_persil($data['no_persil']);
+			$data["persil_sebab_mutasi"] = $this->data_persil_model->list_persil_sebab_mutasi();
+			$this->load->view('data_persil/mutasi', $data);
+		}
+		$this->load->view('footer');
+	}
+
+	public function simpan_mutasi()
+	{
+		$data = $this->data_persil_model->simpan_mutasi();
+		if ($data["jenis"] == 2)
+			redirect("data_persil/create_ext/edit/".$data["id"]);
+		else
+			redirect("data_persil/create/edit/".$data["id"]);
+	}
+
+	public function hapus_mutasi($persil=0, $id=0, $ext=1)
+	{
+		$this->redirect_hak_akses('h', "data_persil/create/edit/".$persil);
+		$this->data_persil_model->hapus_mutasi($id);
+		if($ext==2)
+			redirect("data_persil/create_ext/edit/".$persil);
+		else
+			redirect("data_persil/create/edit/".$persil);
 	}
 
 }

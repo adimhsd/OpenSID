@@ -86,11 +86,6 @@ class Migrasi_2003_ke_2004 extends CI_model {
 					'after' => 'persil_peruntukan_id',
 					'null' => TRUE					
 				),
-				'keterangan' => array(
-					'type' => 'TEXT',
-					'after' => 'pajak',
-					'null' => TRUE	
-				),
 				'lokasi' => array(
 					'type' => 'TEXT',
 					'after' => 'pemilik_luar',
@@ -98,6 +93,49 @@ class Migrasi_2003_ke_2004 extends CI_model {
 				)
 			);
 			$this->dbforge->add_column('data_persil', $fields);
+		}
+
+		// Buat tabel mutasi Persil
+		if (!$this->db->table_exists('data_persil_mutasi'))
+		{
+			$fields = array(
+				'id' => array(
+					'type' => 'INT',
+					'constraint' => 5,
+					'unsigned' => TRUE,
+					'auto_increment' => TRUE
+				),
+				'id_persil' => array(
+					'type' => 'INT',
+					'constraint' => 5,
+				),
+				'tanggalmutasi' => array(
+					'type' => 'date',
+					'null' => TRUE
+				),
+				'sebabmutasi' => array(
+					'type' => 'VARCHAR',
+					'constraint' => 20,
+					'null' => TRUE					
+				),
+				'luasmutasi' => array(
+					'type' => 'decimal',
+					'constraint' => 7,
+					'null' => TRUE	
+				),
+				'c_desa_awal' => array(
+					'type' => 'INT',
+					'constraint' => 5,
+					'null' => TRUE
+				),
+				'keterangan' => array(
+					'type' => 'TEXT',
+					'null' => TRUE	
+				),
+			);
+			$this->dbforge->add_key('id', TRUE);
+			$this->dbforge->add_field($fields);
+			$this->dbforge->create_table('data_persil_mutasi');
 		}
 	}
 }

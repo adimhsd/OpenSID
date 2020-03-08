@@ -127,13 +127,76 @@
 												<input  id="pajak" class="form-control input-sm angka" type="text" placeholder="Pajak" name="pajak" value="<?= $persil_detail["pajak"] ?>">
 											</div>
 										</div>
-										<div class="form-group">
+										
+											<?php if ($mode !== 'edit'): ?>
+											<div class="form-group">
 											<label for="nama"  class="col-sm-3 control-label">Sebab Dan Tanggal Perubahan</label>
 											<div class="col-sm-8">
-												<textarea  id="ket" class="form-control input-sm" type="text" placeholder="Sebab Dan Tanggal Perubahan" name="ket" ><?= $persil_detail["keterangan"] ?></textarea>
+												<div class="form-group">
+													<label for="nama"  class="col-sm-3 control-label">Tanggal Perubahan</label>
+													<div class="col-sm-4">
+														<div class="input-group input-group-sm date">
+															<div class="input-group-addon">
+																<i class="fa fa-calendar"></i>
+															</div>
+															<input class="form-control input-sm pull-right" id="tgl_1" name="tanggalmutasi" type="text" value="">
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="nama"  class="col-sm-3 control-label">Sebab Mutasi</label>
+													<div class="col-sm-4">
+														<select class="form-control input-sm" name="sebabmutasi" >
+															<option value>-- Pilih Sebab Mutasi--</option>
+															<?php foreach ($persil_sebab_mutasi as $key => $item): ?>
+																<option value="<?= $item['id'] ?>" <?php selected($key, $persil_detail["persil_sebab_mutasi"]) ?>><?= $item['nama']?></option>
+															<?php endforeach;?>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="nama"  class="col-sm-3 control-label">Luas Mutasi</label>
+													<div class="col-sm-9">
+														<input  name="luasmutasi"  type="text"  class="form-control input-sm luas" placeholder="Luas Mutasi" value="<?= $persil_detail["luas"] ?>">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="nama"  class="col-sm-3 control-label">Perolehan Dari</label>
+													<div class="col-sm-9">
+														<input name="c_desa_awal"  type="text"  class="form-control input-sm angka" placeholder="Nomor C-DESA" value="<?= $persil_detail["luas"] ?>">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="nama"  class="col-sm-3 control-label">Keterangan</label>
+													<div class="col-sm-9">
+														<textarea  id="ket" class="form-control input-sm" type="text" placeholder="Sebab Dan Tanggal Perubahan" name="ket" ><?= $persil_detail["keterangan"] ?></textarea>
+													</div>
+												</div>
 											</div>
-										</div>											
-										<div class="form-group">
+											</div>
+											<?php else : ?>
+												<div class="form-group">
+												<label for="nama"  class="col-sm-3 control-label">Sebab Dan Tanggal Perubahan</label>
+													<div class="col-sm-8">
+													<?php $no =1; foreach($persil_mutasi as $item) : ?>
+														 <div class="input-sm col-sm-8">
+															 <?= $no++ ?>. <?= tgl_indo_out($item['tanggalmutasi']) ?> <?= $item['sebabmutasi'] ?> 
+															 <?= !empty($item['luasmutasi']) ? "seluas ".number_format($item['luasmutasi'])." m2 " : null ?>
+															  <?= !empty($item['c_desa_awal']) ? "dari C-DESA ".$item['c_desa_awal']: null ?>
+														 </div>
+														 <div class="col-xs-4"><a href="<?= site_url("data_persil/mutasi/edit/".$item["id"]) ?>" class="btn bg-yellow btn-flat btn-sm " title="Edit"><i class="fa fa-edit"></i></a>
+														 <a href="<?= site_url("data_persil/hapus_mutasi/".$item["id_persil"]."/".$item["id"]) ?>" class="btn bg-red btn-flat btn-sm " title="Hapus"><i class="fa fa-edit"></i></a></div>
+													<?php endforeach; ?>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="nama"  class="col-sm-3 control-label"></label>
+													<div class="col-sm-8">
+														<a href="<?= site_url("data_persil/mutasi/".$persil_detail["id"]) ?>" class="btn btn-social btn-flat btn-success btn-sm visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" title="Tambah Data"><i class="fa fa-plus"></i> Sebab Dan Tanggal Perubahan</a>
+													</div>
+												</div>
+												<?php endif; ?>
+												<div class="form-group">
 											<label for="sid"  class="col-sm-3 control-label">Peruntukan</label>
 											<div class="col-sm-4">
 												<select class="form-control  input-sm select2" id="sid" name="sid">
@@ -153,7 +216,6 @@
 												<label  class="btn btn-info btn-flat btn-sm col-sm-3 form-check-label  <?= $persil_detail["lokasi"]?'active' : NULL  ?>">
 													<input type="radio"  name="pilihan" class="form-check-input" type="radio" value="2" autocomplete="off" onchange="pilih_lokasi(this.value);"> Tulis Manual
 												</label>
-
 											</div>
 										</div>
 										<div class="form-group">
@@ -234,6 +296,5 @@
 			$("#pilih").hide();
 		}
 	}
-
 </script>
 
