@@ -167,5 +167,40 @@ class Migrasi_2003_ke_2004 extends CI_model {
 			$this->dbforge->add_field($fields);
 			$this->dbforge->create_table('data_persil_mutasi');
 		}
+
+		// Buat tabel jenis Mutasi Persil
+		if (!$this->db->table_exists('ref_persil_mutasi'))
+		{
+			$fields = array(
+				'id' => array(
+					'type' => 'TINYINT',
+					'constraint' => 5,
+					'unsigned' => TRUE,
+					'auto_increment' => TRUE
+				),
+				'nama' => array(
+					'type' => 'VARCHAR',
+					'constraint' => 20
+				),
+				'ndesc' => array(
+					'type' => 'text',
+					'null' => TRUE
+				)
+			);
+			$this->dbforge->add_key('id', TRUE);
+			$this->dbforge->add_field($fields);
+			$this->dbforge->create_table('ref_persil_mutasi');
+		}
+		else
+		{
+			$this->db->truncate('ref_persil_mutasi');
+		}
+
+		$data = [
+			['nama' => 'Jual Beli', 'ndesc' => 'Didapat dari proses Jual Beli'],
+			['nama' => 'Hibah', 'ndesc' => 'Didapat dari proses Hibah'],
+			['nama' => 'Waris', 'ndesc' => 'Didapat dari proses Waris'],
+			];
+		$this->db->insert_batch('ref_persil_mutasi', $data);
 	}
 }
