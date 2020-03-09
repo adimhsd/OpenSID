@@ -736,7 +736,13 @@ function alfanumerik_spasi($str)
 
 function nomor_surat_keputusan($str)
 {
-	return preg_replace('/[^a-zA-Z0-9-\/\s]/', '', strip_tags($str));
+	return preg_replace('/[^a-zA-Z0-9 \.\-\/]/', '', strip_tags($str));
+}
+
+// Nama hanya boleh berisi karakter alpha, spasi, titik, koma, tanda petik dan strip
+function nama($str)
+{
+	return preg_replace("/[^a-zA-Z '\.,\-]/", '', strip_tags($str));
 }
 
 function buat_slug($data_slug)
